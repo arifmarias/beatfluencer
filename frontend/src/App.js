@@ -838,7 +838,7 @@ const CategoryModal = ({ category, isOpen, onClose, navigate }) => {
             ))}
             
             {/* 10th Card - Full List - Same Size */}
-            <Card className="cursor-pointer hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-dashed border-indigo-300 overflow-hidden w-full max-w-[280px] mx-auto h-[400px] flex flex-col">
+            <Card className="cursor-pointer hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-dashed border-indigo-300 overflow-hidden w-full max-w-[280px] mx-auto flex flex-col" style={{ height: '420px' }}>
               <div className="aspect-square bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
                 <div className="w-20 h-20 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-xl animate-pulse">
                   <ExternalLink className="w-10 h-10 text-white" />
