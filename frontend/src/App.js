@@ -377,7 +377,7 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-6xl max-h-[95vh] overflow-hidden border border-gray-100">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-6xl max-h-[90vh] overflow-hidden border border-gray-100 flex flex-col">
         
         {/* Refined Header */}
         <div className="bg-gradient-to-r from-slate-50 via-gray-50 to-slate-100 p-8 border-b border-gray-200 relative">
