@@ -609,155 +609,218 @@ const LandingPage = () => {
               </Button>
             </div>
             
-            {/* Custom Filters Panel */}
-            {showCustomFilters && (
-              <Card className="p-6 bg-white/90 backdrop-blur-sm border-0 shadow-lg rounded-xl animate-fade-in">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div>
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">Platform</Label>
-                    <Select value={filters.platform} onValueChange={(value) => setFilters({...filters, platform: value})}>
-                      <SelectTrigger className="h-10">
-                        <SelectValue placeholder="Select platform" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Platforms</SelectItem>
-                        <SelectItem value="facebook">Facebook</SelectItem>
-                        <SelectItem value="youtube">YouTube</SelectItem>
-                        <SelectItem value="instagram">Instagram</SelectItem>
-                        <SelectItem value="tiktok">TikTok</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">Gender</Label>
-                    <Select value={filters.gender[0] || ''} onValueChange={(value) => setFilters({...filters, gender: value ? [value] : []})}>
-                      <SelectTrigger className="h-10">
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="others">Others</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">Experience</Label>
-                    <Select value={filters.experience} onValueChange={(value) => setFilters({...filters, experience: value})}>
-                      <SelectTrigger className="h-10">
-                        <SelectValue placeholder="Experience level" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="0-1">0-1 years</SelectItem>
-                        <SelectItem value="1-3">1-3 years</SelectItem>
-                        <SelectItem value="3-5">3-5 years</SelectItem>
-                        <SelectItem value="5+">5+ years</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">Location</Label>
-                    <Select value={filters.division} onValueChange={(value) => setFilters({...filters, division: value})}>
-                      <SelectTrigger className="h-10">
-                        <SelectValue placeholder="Select division" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {bangladeshDivisions.map((division) => (
-                          <SelectItem key={division} value={division}>{division}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </Card>
-            )}
-            
             {/* Advanced Search Panel */}
             {showAdvancedSearch && (
-              <Card className="p-6 bg-white/90 backdrop-blur-sm border-0 shadow-lg rounded-xl animate-fade-in">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div>
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">Follower Range</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Input
-                        placeholder="Min followers"
-                        value={filters.minFollowers}
-                        onChange={(e) => setFilters({...filters, minFollowers: e.target.value})}
-                        className="h-10"
-                      />
-                      <Input
-                        placeholder="Max followers"
-                        value={filters.maxFollowers}
-                        onChange={(e) => setFilters({...filters, maxFollowers: e.target.value})}
-                        className="h-10"
-                      />
+              <Card className="p-8 bg-white/95 backdrop-blur-sm border-0 shadow-xl rounded-2xl animate-fade-in">
+                <div className="space-y-8">
+                  {/* Platform & Basic Filters */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div>
+                      <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
+                        <Globe className="w-4 h-4 mr-2 text-indigo-600" />
+                        Platform
+                      </Label>
+                      <Select value={filters.platform} onValueChange={(value) => setFilters({...filters, platform: value})}>
+                        <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                          <SelectValue placeholder="Select platform" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Platforms</SelectItem>
+                          <SelectItem value="facebook">
+                            <div className="flex items-center">
+                              <Facebook className="w-4 h-4 mr-2 text-blue-600" />
+                              Facebook
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="youtube">
+                            <div className="flex items-center">
+                              <Youtube className="w-4 h-4 mr-2 text-red-600" />
+                              YouTube
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="instagram">
+                            <div className="flex items-center">
+                              <Instagram className="w-4 h-4 mr-2 text-pink-600" />
+                              Instagram
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="tiktok">
+                            <div className="flex items-center">
+                              <Video className="w-4 h-4 mr-2 text-black" />
+                              TikTok
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
+                        <Users2 className="w-4 h-4 mr-2 text-purple-600" />
+                        Gender
+                      </Label>
+                      <Select value={filters.gender[0] || ''} onValueChange={(value) => setFilters({...filters, gender: value ? [value] : []})}>
+                        <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                          <SelectValue placeholder="Select gender" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="male">Male</SelectItem>
+                          <SelectItem value="female">Female</SelectItem>
+                          <SelectItem value="others">Others</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
+                        <BarChart3 className="w-4 h-4 mr-2 text-green-600" />
+                        Experience
+                      </Label>
+                      <Select value={filters.experience} onValueChange={(value) => setFilters({...filters, experience: value})}>
+                        <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                          <SelectValue placeholder="Experience level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0-1">0-1 years</SelectItem>
+                          <SelectItem value="1-3">1-3 years</SelectItem>
+                          <SelectItem value="3-5">3-5 years</SelectItem>
+                          <SelectItem value="5+">5+ years</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
+                        <MapPin className="w-4 h-4 mr-2 text-red-600" />
+                        Location
+                      </Label>
+                      <Select value={filters.division} onValueChange={(value) => setFilters({...filters, division: value})}>
+                        <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                          <SelectValue placeholder="Select division" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {bangladeshDivisions.map((division) => (
+                            <SelectItem key={division} value={division}>{division}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
-                  
-                  <div>
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">Age Range</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Input
-                        placeholder="Min age"
-                        value={filters.minAge}
-                        onChange={(e) => setFilters({...filters, minAge: e.target.value})}
-                        className="h-10"
-                      />
-                      <Input
-                        placeholder="Max age"
-                        value={filters.maxAge}
-                        onChange={(e) => setFilters({...filters, maxAge: e.target.value})}
-                        className="h-10"
-                      />
+
+                  {/* Advanced Filters */}
+                  <div className="border-t border-gray-200 pt-6">
+                    <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                      <Target className="w-5 h-5 mr-2 text-indigo-600" />
+                      Advanced Filters
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div>
+                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
+                          <Users className="w-4 h-4 mr-2 text-blue-600" />
+                          Follower Range
+                        </Label>
+                        <div className="grid grid-cols-2 gap-3">
+                          <Input
+                            placeholder="Min followers"
+                            value={filters.minFollowers}
+                            onChange={(e) => setFilters({...filters, minFollowers: e.target.value})}
+                            className="h-12 border-2 border-gray-200 rounded-xl"
+                          />
+                          <Input
+                            placeholder="Max followers"
+                            value={filters.maxFollowers}
+                            onChange={(e) => setFilters({...filters, maxFollowers: e.target.value})}
+                            className="h-12 border-2 border-gray-200 rounded-xl"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
+                          <Calendar className="w-4 h-4 mr-2 text-orange-600" />
+                          Age Range
+                        </Label>
+                        <div className="grid grid-cols-2 gap-3">
+                          <Input
+                            placeholder="Min age"
+                            value={filters.minAge}
+                            onChange={(e) => setFilters({...filters, minAge: e.target.value})}
+                            className="h-12 border-2 border-gray-200 rounded-xl"
+                          />
+                          <Input
+                            placeholder="Max age"
+                            value={filters.maxAge}
+                            onChange={(e) => setFilters({...filters, maxAge: e.target.value})}
+                            className="h-12 border-2 border-gray-200 rounded-xl"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
+                          <DollarSign className="w-4 h-4 mr-2 text-green-600" />
+                          Budget Range (BDT)
+                        </Label>
+                        <div className="grid grid-cols-2 gap-3">
+                          <Input
+                            placeholder="Min budget"
+                            value={filters.minBudget}
+                            onChange={(e) => setFilters({...filters, minBudget: e.target.value})}
+                            className="h-12 border-2 border-gray-200 rounded-xl"
+                          />
+                          <Input
+                            placeholder="Max budget"
+                            value={filters.maxBudget}
+                            onChange={(e) => setFilters({...filters, maxBudget: e.target.value})}
+                            className="h-12 border-2 border-gray-200 rounded-xl"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
+                          <UserCheck className="w-4 h-4 mr-2 text-purple-600" />
+                          Account Type
+                        </Label>
+                        <Select value={filters.accountType} onValueChange={(value) => setFilters({...filters, accountType: value})}>
+                          <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="personal">Solo Creator</SelectItem>
+                            <SelectItem value="business">Business Account</SelectItem>
+                            <SelectItem value="creator">Professional Creator</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
+                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
+                          <Star className="w-4 h-4 mr-2 text-yellow-600" />
+                          Verification
+                        </Label>
+                        <Select value={filters.verified} onValueChange={(value) => setFilters({...filters, verified: value})}>
+                          <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                            <SelectValue placeholder="Verification status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="true">✓ Verified</SelectItem>
+                            <SelectItem value="false">⚬ Not Verified</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </div>
-                  
-                  <div>
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">Budget Range (BDT)</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Input
-                        placeholder="Min budget"
-                        value={filters.minBudget}
-                        onChange={(e) => setFilters({...filters, minBudget: e.target.value})}
-                        className="h-10"
-                      />
-                      <Input
-                        placeholder="Max budget"
-                        value={filters.maxBudget}
-                        onChange={(e) => setFilters({...filters, maxBudget: e.target.value})}
-                        className="h-10"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">Account Type</Label>
-                    <Select value={filters.accountType} onValueChange={(value) => setFilters({...filters, accountType: value})}>
-                      <SelectTrigger className="h-10">
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="personal">Solo</SelectItem>
-                        <SelectItem value="business">Business</SelectItem>
-                        <SelectItem value="creator">Creator</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <Label className="text-sm font-semibold text-gray-700 mb-2 block">Verification</Label>
-                    <Select value={filters.verified} onValueChange={(value) => setFilters({...filters, verified: value})}>
-                      <SelectTrigger className="h-10">
-                        <SelectValue placeholder="Verification status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="true">Verified</SelectItem>
-                        <SelectItem value="false">Not Verified</SelectItem>
-                      </SelectContent>
-                    </Select>
+
+                  {/* Apply Filters Button */}
+                  <div className="flex justify-center pt-6 border-t border-gray-200">
+                    <Button 
+                      onClick={handleSearch}
+                      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-12 py-4 rounded-xl text-lg font-semibold shadow-lg transform hover:scale-105 transition-all duration-300"
+                    >
+                      <Search className="w-5 h-5 mr-2" />
+                      Apply Filters & Search
+                    </Button>
                   </div>
                 </div>
               </Card>
