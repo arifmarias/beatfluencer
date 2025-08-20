@@ -70,20 +70,20 @@ class BeatfluencerAPITester:
         
         test_users = [
             {
-                "username": "admin_user",
-                "email": "admin@test.com",
+                "username": "admin_user_new",
+                "email": "admin_new@test.com",
                 "password": "admin123",
                 "role": "admin"
             },
             {
-                "username": "campaign_manager",
-                "email": "cm@test.com", 
+                "username": "campaign_manager_new",
+                "email": "cm_new@test.com", 
                 "password": "cm123",
                 "role": "campaign_manager"
             },
             {
-                "username": "influencer_manager",
-                "email": "im@test.com",
+                "username": "influencer_manager_new",
+                "email": "im_new@test.com",
                 "password": "im123", 
                 "role": "influencer_manager"
             }
