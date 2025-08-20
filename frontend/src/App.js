@@ -1261,13 +1261,10 @@ const LandingPage = () => {
       
       console.log('Organized category data:', categoryData); // Debug log
       
-      // Limit each category to 9 influencers
+      // Use only real influencers, no demo data
       categories.forEach(category => {
         const realInfluencers = categoryData[category.name] || [];
-        
-        // Use only real influencers, limited to 9
-        const limited = realInfluencers.slice(0, 9);
-        categoryData[category.name] = limited;
+        categoryData[category.name] = realInfluencers;
       });
       
       console.log('Final category data:', categoryData); // Debug log
