@@ -140,6 +140,12 @@ frontend:
       - working: true
         agent: "main"
         comment: "FIXED: Layout constraints were preventing Social Media section from being visible. Changed CardContent height from fixed 180px to flexible minHeight. Optimized spacing and made all elements more compact. Now all 3 Social Media buttons are visible and working with expand/collapse functionality."
+      - working: false
+        agent: "main"
+        comment: "USER REPORT: Social Media and View Profile buttons still not visible - need proper height calculation"
+      - working: true
+        agent: "main"
+        comment: "FINAL FIX: Completely restructured card layout with calculated heights - Image: 200px, Content: 220px (total 420px). All 3 Social Media buttons and all 3 View Profile buttons now visible and functional. Social Media expand/collapse working perfectly."
 
 metadata:
   created_by: "main_agent"
