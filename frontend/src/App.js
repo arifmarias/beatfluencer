@@ -1165,13 +1165,8 @@ const LandingPage = () => {
     setSelectedCategory(category);
     setShowCategoryModal(true);
     
-    // Load demo data for the category
-    if (demoInfluencers[category.name]) {
-      setCategoryInfluencers(prev => ({
-        ...prev,
-        [category.name]: demoInfluencers[category.name]
-      }));
-    }
+    // Category influencers are already loaded in fetchCategoryInfluencers
+    // No need to reload here as the data is already organized by category
   };
 
   const closeCategoryModal = () => {
