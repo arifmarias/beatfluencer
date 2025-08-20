@@ -962,8 +962,8 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
 };
 
 // Category Modal Component
-const CategoryModal = ({ category, isOpen, onClose, navigate }) => {
-  const influencers = demoInfluencers[category?.name] || [];
+const CategoryModal = ({ category, isOpen, onClose, navigate, categoryInfluencers }) => {
+  const influencers = categoryInfluencers[category?.name] || [];
   
   if (!isOpen || !category) return null;
 
