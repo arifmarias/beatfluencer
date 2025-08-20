@@ -1592,7 +1592,48 @@ const Unauthorized = () => (
   </div>
 );
 
-// Main App Component
+// Category List Page Component
+const CategoryListPage = () => {
+  const { categoryName } = useParams();
+  const navigate = useNavigate();
+  const categoryDisplayName = categoryName?.split('-').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ') || '';
+  
+  const influencers = demoInfluencers[categoryDisplayName] || [];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      
+      <div className="pt-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/landing')}
+              className="mb-4"
+            >
+              ← Back to Categories
+            </Button>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              All {categoryDisplayName} <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Influencers</span>
+            </h1>
+            <p className="text-gray-600">
+              Complete list of {categoryDisplayName.toLowerCase()} content creators on our platform
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {influencers.map((influencer) => (
+              <DetailedInfluencerCard key={influencer.id} influencer={influencer} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 function App() {
   return (
     <div className="App">
