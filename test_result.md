@@ -101,3 +101,48 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Fix the 'View all' card size to match other influencer cards and restore the 'Social Media Presence' collapsible feature."
+
+frontend:
+  - task: "Fix View All card size mismatch"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "DetailedInfluencerCard has height 420px but View All card has height 400px - size mismatch identified"
+  
+  - task: "Restore Social Media Presence collapsible section"
+    implemented: true
+    working: "unknown"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "unknown"
+        agent: "main"
+        comment: "Social Media Presence section exists in DetailedInfluencerCard (lines 752-787) with proper collapsible functionality - need to verify if it's visible and working correctly"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Fix View All card size mismatch"
+    - "Verify Social Media Presence collapsible section functionality"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Identified View All card height mismatch (400px vs 420px) and need to verify Social Media Presence section visibility. Ready to implement fixes."
