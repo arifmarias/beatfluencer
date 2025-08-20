@@ -256,10 +256,10 @@ const Login = () => {
             <img 
               src="/beatfluencer_logo.png" 
               alt="Beatfluencer Logo"
-              className="h-full w-full object-contain drop-shadow-2xl animate-float hover:scale-110 transition-transform duration-500"
+              className="h-full w-full object-contain hover:scale-110 transition-all duration-700 ease-out"
               style={{
-                filter: 'drop-shadow(0 0 20px rgba(147, 51, 234, 0.3))',
-                animation: 'float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate'
+                filter: 'drop-shadow(0 0 25px rgba(147, 51, 234, 0.4))',
+                animation: 'float 3s ease-in-out infinite, purpleGlow 2s ease-in-out infinite alternate'
               }}
             />
           </div>
