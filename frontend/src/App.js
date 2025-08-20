@@ -435,11 +435,11 @@ const InfluencerCard = ({ influencer, showRemuneration = false }) => {
 // Landing Page Component
 const LandingPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [showCustomFilters, setShowCustomFilters] = useState(false);
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [featuredInfluencers, setFeaturedInfluencers] = useState([]);
   const [categoryInfluencers, setCategoryInfluencers] = useState({});
+  const [expandedCategory, setExpandedCategory] = useState(null);
   const { token, user } = useAuth();
 
   const categories = [
