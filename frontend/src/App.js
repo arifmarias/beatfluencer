@@ -271,11 +271,11 @@ const Login = () => {
               }}
             />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">Welcome to Beatfluencer</h2>
-          <p className="mt-2 text-gray-600">Bangladesh's Premier Influencer Platform</p>
+          <h2 className="text-3xl font-bold text-white">Welcome to Beatfluencer</h2>
+          <p className="mt-2 text-purple-200">Bangladesh's Premier Influencer Platform</p>
           <div className="mt-4 flex items-center justify-center space-x-2">
-            <Badge className="bg-green-100 text-green-800">🇧🇩 Bangladesh</Badge>
-            <Badge className="bg-blue-100 text-blue-800">Influencer Marketing</Badge>
+            <Badge className="bg-green-500/20 text-green-300 border border-green-500/30">🇧🇩 Bangladesh</Badge>
+            <Badge className="bg-purple-500/20 text-purple-300 border border-purple-500/30">Influencer Marketing</Badge>
           </div>
         </div>
         
