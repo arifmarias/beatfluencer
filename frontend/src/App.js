@@ -248,8 +248,12 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       <div className="max-w-md w-full space-y-8 p-8">
         <div className="text-center">
-          <div className="mx-auto h-24 w-24 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-            <Sparkles className="h-12 w-12 text-white" />
+          <div className="mx-auto h-32 w-32 mb-8 flex items-center justify-center">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_brandnest/artifacts/lynsk6m2_image.png" 
+              alt="Beatfluencer Logo"
+              className="h-full w-full object-contain drop-shadow-lg"
+            />
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Welcome to Beatfluencer</h2>
           <p className="mt-2 text-gray-600">Bangladesh's Premier Influencer Platform</p>
