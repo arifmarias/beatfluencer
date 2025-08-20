@@ -1715,6 +1715,8 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
       setUploadingImage(false);
     }
   };
+
+  const checkUrlExists = async (url, platformId) => {
     if (!url.trim()) {
       setUrlErrors(prev => ({ ...prev, [platformId]: '' }));
       return;
