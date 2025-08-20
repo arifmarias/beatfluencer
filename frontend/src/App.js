@@ -766,7 +766,7 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
         </div>
 
         {/* Clean Footer */}
-        <div className="border-t border-gray-200 bg-gray-50 p-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div className="border-t border-gray-200 bg-gray-50 p-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 flex-shrink-0">
           <div className="text-gray-500 text-sm">
             Created on {new Date(influencer.created_at).toLocaleDateString('en-GB')}
           </div>
