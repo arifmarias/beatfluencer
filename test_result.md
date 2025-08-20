@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Fix the 'View all' card size to match other influencer cards and restore the 'Social Media Presence' collapsible feature."
+user_problem_statement: "Fix influencer profile modal - bottom 2 buttons are not visible due to modal height issues."
 
 frontend:
   - task: "Fix View All card size mismatch"
@@ -146,6 +146,21 @@ frontend:
       - working: true
         agent: "main"
         comment: "FINAL FIX: Completely restructured card layout with calculated heights - Image: 200px, Content: 220px (total 420px). All 3 Social Media buttons and all 3 View Profile buttons now visible and functional. Social Media expand/collapse working perfectly."
+
+  - task: "Fix InfluencerProfileModal bottom buttons visibility"
+    implemented: true
+    working: "unknown"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "USER REPORT: Bottom 2 buttons in influencer profile modal are not visible - modal height issue preventing footer from showing"
+      - working: "unknown"
+        agent: "main"
+        comment: "IMPLEMENTED FIX: Changed modal layout to use flexbox with proper height management. Modified modal max-height to 90vh, made content area flex-1 with overflow-y-auto, and footer flex-shrink-0 to ensure it's always visible"
 
 metadata:
   created_by: "main_agent"
