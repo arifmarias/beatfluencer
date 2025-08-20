@@ -762,9 +762,9 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
           </Button>
           
           {showSocialMedia && (
-            <div className="mt-1 space-y-0.5 animate-fade-in max-h-12 overflow-y-auto">
-              {influencer.social_media_accounts?.slice(0, 2).map((account, index) => (
-                <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-1 text-xs">
+            <div className="mt-1 space-y-1 animate-fade-in">
+              {influencer.social_media_accounts?.slice(0, 3).map((account, index) => (
+                <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-1.5 text-xs">
                   <div className="flex items-center space-x-1">
                     {account.platform === 'instagram' && <Instagram className="w-3 h-3 text-pink-500" />}
                     {account.platform === 'youtube' && <Youtube className="w-3 h-3 text-red-500" />}
