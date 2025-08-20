@@ -684,17 +684,23 @@ const demoInfluencers = {
   ]
 };
 // Enhanced Influencer Card Component for Modal
-const DetailedInfluencerCard = ({ influencer }) => {
+const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
   const { user } = useAuth();
   const [showSocialMedia, setShowSocialMedia] = useState(false);
   const totalFollowers = influencer.social_media_accounts?.reduce((sum, account) => sum + account.follower_count, 0) || 0;
   
-  const age = influencer.date_of_birth 
-    ? new Date().getFullYear() - new Date(influencer.date_of_birth).getFullYear()
-    : null;
+  // Get first name only if full name is too long
+  const displayName = influencer.name?.length > 15 
+    ? influencer.name.split(' ')[0] 
+    : influencer.name;
+
+  // Filter out current category from displayed categories
+  const filteredCategories = influencer.categories?.filter(
+    category => category.toLowerCase() !== currentCategory?.toLowerCase()
+  ) || [];
 
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden h-full max-w-sm">
+    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden h-full w-full max-w-[280px] mx-auto">
       <div className="relative">
         {/* Clean Profile Image - No Overlays */}
         <div className="aspect-square overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
@@ -706,38 +712,20 @@ const DetailedInfluencerCard = ({ influencer }) => {
         </div>
       </div>
       
-      <CardContent className="p-4 space-y-3">
+      <CardContent className="p-3 space-y-2 flex flex-col h-[180px]">
         {/* Profile Info - Clean Layout */}
         <div className="text-center">
-          <h3 className="font-bold text-lg text-gray-900 mb-1">{influencer.name}</h3>
-          <div className="flex items-center justify-center space-x-4 text-sm text-gray-600 mb-2">
-            <span className="capitalize">{influencer.account_type}</span>
-            {age && <span>{age} years</span>}
-            <span>{influencer.division}</span>
-          </div>
-          
-          {/* Badges Row */}
-          <div className="flex items-center justify-center space-x-2 mb-3">
-            {influencer.verification_status && (
-              <Badge className="bg-blue-100 text-blue-700 text-xs">
-                <Verified className="w-3 h-3 mr-1" />
-                Verified
-              </Badge>
-            )}
-            {influencer.featured_creators && (
-              <Badge className="bg-yellow-100 text-yellow-700 text-xs">
-                <Crown className="w-3 h-3 mr-1" />
-                Featured
-              </Badge>
-            )}
+          <h3 className="font-bold text-base text-gray-900 mb-1 truncate">{displayName}</h3>
+          <div className="text-xs text-gray-600 mb-2">
+            <span className="capitalize">{influencer.account_type}</span> • <span>{influencer.division}</span>
           </div>
         </div>
         
-        {/* Total Followers - Prominent Display */}
-        <div className="text-center bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4">
-          <div className="flex items-center justify-center space-x-2 mb-1">
-            <Users className="w-5 h-5 text-indigo-600" />
-            <span className="text-2xl font-bold text-gray-900">
+        {/* Total Followers - Compact Display */}
+        <div className="text-center bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-2">
+          <div className="flex items-center justify-center space-x-1 mb-1">
+            <Users className="w-4 h-4 text-indigo-600" />
+            <span className="text-lg font-bold text-gray-900">
               {totalFollowers > 1000000 
                 ? `${(totalFollowers / 1000000).toFixed(1)}M` 
                 : totalFollowers > 1000 
@@ -746,44 +734,43 @@ const DetailedInfluencerCard = ({ influencer }) => {
               }
             </span>
           </div>
-          <span className="text-sm text-gray-600 font-medium">Total Followers</span>
+          <span className="text-xs text-gray-600 font-medium">Total Followers</span>
         </div>
         
-        {/* Categories - Compact */}
-        <div className="flex flex-wrap gap-1 justify-center">
-          {influencer.categories?.slice(0, 3).map((category, index) => (
-            <Badge key={index} variant="outline" className="text-xs border-purple-200 text-purple-700 bg-purple-50">
-              {category}
-            </Badge>
-          ))}
-        </div>
+        {/* Categories - Only show if different from current category */}
+        {filteredCategories.length > 0 && (
+          <div className="flex flex-wrap gap-1 justify-center">
+            {filteredCategories.slice(0, 2).map((category, index) => (
+              <Badge key={index} variant="outline" className="text-xs border-purple-200 text-purple-700 bg-purple-50">
+                {category}
+              </Badge>
+            ))}
+          </div>
+        )}
         
         {/* Collapsible Social Media Section */}
-        <div className="border-t border-gray-100 pt-3">
+        <div className="border-t border-gray-100 pt-2 flex-1 flex flex-col">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setShowSocialMedia(!showSocialMedia)}
-            className="w-full text-gray-600 hover:text-indigo-600 transition-colors"
+            className="w-full text-gray-600 hover:text-indigo-600 transition-colors p-1 h-auto"
           >
-            <Globe className="w-4 h-4 mr-2" />
-            Social Media Presence
-            <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-200 ${showSocialMedia ? 'rotate-180' : ''}`} />
+            <Globe className="w-3 h-3 mr-2" />
+            <span className="text-xs">Social Media</span>
+            <ChevronDown className={`w-3 h-3 ml-2 transition-transform duration-200 ${showSocialMedia ? 'rotate-180' : ''}`} />
           </Button>
           
           {showSocialMedia && (
-            <div className="mt-3 space-y-2 animate-fade-in">
+            <div className="mt-2 space-y-1 animate-fade-in flex-1 overflow-y-auto">
               {influencer.social_media_accounts?.map((account, index) => (
-                <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-2 text-sm">
-                  <div className="flex items-center space-x-2">
-                    {account.platform === 'instagram' && <Instagram className="w-4 h-4 text-pink-500" />}
-                    {account.platform === 'youtube' && <Youtube className="w-4 h-4 text-red-500" />}
-                    {account.platform === 'facebook' && <Facebook className="w-4 h-4 text-blue-500" />}
-                    {account.platform === 'tiktok' && <Video className="w-4 h-4 text-black" />}
+                <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-1 text-xs">
+                  <div className="flex items-center space-x-1">
+                    {account.platform === 'instagram' && <Instagram className="w-3 h-3 text-pink-500" />}
+                    {account.platform === 'youtube' && <Youtube className="w-3 h-3 text-red-500" />}
+                    {account.platform === 'facebook' && <Facebook className="w-3 h-3 text-blue-500" />}
+                    {account.platform === 'tiktok' && <Video className="w-3 h-3 text-black" />}
                     <span className="font-medium capitalize">{account.platform}</span>
-                    {account.verification_status && (
-                      <Verified className="w-3 h-3 text-blue-500" />
-                    )}
                   </div>
                   <span className="font-semibold text-gray-900">
                     {account.follower_count > 1000000 
@@ -800,8 +787,8 @@ const DetailedInfluencerCard = ({ influencer }) => {
         </div>
         
         {/* Action Button */}
-        <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-2 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200">
-          <Eye className="w-4 h-4 mr-2" />
+        <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-1.5 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200 text-xs mt-auto">
+          <Eye className="w-3 h-3 mr-1" />
           View Profile
         </Button>
       </CardContent>
