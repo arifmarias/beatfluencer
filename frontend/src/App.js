@@ -596,26 +596,16 @@ const LandingPage = () => {
               </Button>
             </div>
             
-            {/* Custom Filters Toggle */}
-            <div className="flex justify-center space-x-4">
-              <Button
-                variant="outline"
-                onClick={() => setShowCustomFilters(!showCustomFilters)}
-                className="border-green-200 text-green-700 hover:bg-green-50"
-              >
-                <Filter className="w-4 h-4 mr-2" />
-                Custom Filter
-                {showCustomFilters ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
-              </Button>
-              
+            {/* Advanced Search Toggle */}
+            <div className="flex justify-center">
               <Button
                 variant="outline"
                 onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
-                className="border-red-200 text-red-700 hover:bg-red-50"
+                className="border-indigo-200 text-indigo-700 hover:bg-indigo-50 px-8 py-3 rounded-full shadow-md"
               >
-                <Layers className="w-4 h-4 mr-2" />
-                Advanced Search
-                {showAdvancedSearch ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
+                <Filter className="w-5 h-5 mr-2" />
+                Advanced Search & Filters
+                {showAdvancedSearch ? <ChevronUp className="w-5 h-5 ml-2" /> : <ChevronDown className="w-5 h-5 ml-2" />}
               </Button>
             </div>
             
