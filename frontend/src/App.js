@@ -1668,9 +1668,9 @@ function App() {
                 <CampaignsPage />
               </ProtectedRoute>
             } />
-            <Route path="/users" element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <UsersPage />
+            <Route path="/category/:categoryName" element={
+              <ProtectedRoute>
+                <CategoryListPage />
               </ProtectedRoute>
             } />
           </Routes>
