@@ -700,7 +700,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
   ) || [];
 
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden w-full max-w-[280px] mx-auto" style={{ height: showSocialMedia ? '460px' : '420px' }}>
+    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden w-full max-w-[280px] mx-auto" style={{ height: showSocialMedia ? '500px' : '450px' }}>
       <div className="relative">
         {/* Clean Profile Image - No Overlays */}
         <div className="overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200" style={{ height: '200px' }}>
