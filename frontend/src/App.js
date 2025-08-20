@@ -1388,15 +1388,10 @@ const LandingPage = () => {
                     <category.icon className="w-10 h-10 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{category.name}</h3>
-                  <p className="text-gray-600 mb-4">Discover amazing creators</p>
                   <div className="flex items-center justify-center space-x-2">
                     <Badge className={`bg-gradient-to-r ${category.color} text-white px-3 py-1`}>
                       {demoInfluencers[category.name]?.length || 0} creators
                     </Badge>
-                  </div>
-                  <div className="flex items-center justify-center space-x-2 text-indigo-600 mt-4">
-                    <span className="text-sm font-medium">Click to Explore</span>
-                    <Eye className="w-4 h-4" />
                   </div>
                 </CardContent>
               </Card>
