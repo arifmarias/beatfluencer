@@ -140,7 +140,7 @@ class BeatfluencerAPITester:
             "auth/login", 
             401,
             data={
-                "email": "admin@test.com",
+                "email": "admin_new@test.com",
                 "password": "wrongpassword"
             }
         )
