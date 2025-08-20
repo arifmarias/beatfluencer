@@ -1781,21 +1781,113 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Convert date string to ISO format
+      // Validate required fields
+      if (!formData.name.trim()) {
+        alert('Name is required');
+        setLoading(false);
+        return;
+      }
+      
+      if (!formData.email.trim()) {
+        alert('Email is required');
+        setLoading(false);
+        return;
+      }
+      
+      if (!formData.date_of_birth) {
+        alert('Date of birth is required');
+        setLoading(false);
+        return;
+      }
+
+      // Validate social media accounts
+      for (const account of formData.social_media_accounts) {
+        if (!account.channel_name.trim()) {
+          alert(`Channel name is required for ${account.platform_name}`);
+          setLoading(false);
+          return;
+        }
+        if (!account.url.trim()) {
+          alert(`Platform URL is required for ${account.platform_name}`);
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Convert and clean data for backend
       const submitData = {
-        ...formData,
+        // Personal Information
+        account_type: formData.account_type,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        address: formData.address.trim(),
+        division: formData.division,
+        gender: formData.gender,
         date_of_birth: new Date(formData.date_of_birth).toISOString(),
-        affiliated_brands: formData.affiliated_brands.join(',').split(',').map(b => b.trim()).filter(b => b),
+        bio: formData.bio?.trim() || null,
+        profile_image: formData.profile_image || null,
+        
+        // Categories
+        categories: formData.categories,
+        
+        // Remuneration
+        remuneration_services: formData.remuneration_services.filter(service => 
+          service.service_name.trim() && service.rate > 0
+        ),
+        
+        // Experience
+        experience_years: formData.experience_years,
+        total_campaigns: parseInt(formData.total_campaigns) || 0,
+        affiliated_brands: Array.isArray(formData.affiliated_brands) 
+          ? formData.affiliated_brands.filter(brand => brand.trim())
+          : formData.affiliated_brands ? formData.affiliated_brands.split(',').map(b => b.trim()).filter(b => b) : [],
+        dedicated_brands: formData.dedicated_brands || [],
+        successful_campaigns: formData.successful_campaigns || [],
+        industries_worked: formData.industries_worked,
+        
+        // Payment Information
+        beneficiary_name: formData.beneficiary_name?.trim() || null,
+        account_number: formData.account_number?.trim() || null,
+        tin_number: formData.tin_number?.trim() || null,
+        bank_name: formData.bank_name?.trim() || null,
+        
+        // Featured Options
+        featured_category: Boolean(formData.featured_category),
+        featured_creators: Boolean(formData.featured_creators),
+        
+        // Social Media - ensure proper structure
+        social_media_accounts: formData.social_media_accounts.map(account => ({
+          platform: account.platform,
+          channel_name: account.channel_name.trim(),
+          url: account.url.trim(),
+          follower_count: parseInt(account.follower_count) || 0,
+          verification_status: Boolean(account.verification_status),
+          cpv: parseFloat(account.cpv) || 0,
+          created_year: parseInt(account.created_year) || new Date().getFullYear(),
+          created_month: parseInt(account.created_month) || (new Date().getMonth() + 1)
+        }))
       };
 
+      console.log('Submitting data:', submitData); // For debugging
+
       await axios.post(`${API}/influencers`, submitData, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
       
       onSuccess();
     } catch (error) {
       console.error('Error creating influencer:', error);
-      alert('Error creating influencer. Please try again.');
+      if (error.response?.data?.detail) {
+        alert(`Error: ${error.response.data.detail}`);
+      } else if (error.response?.status === 422) {
+        alert('Validation error: Please check all required fields are filled correctly.');
+      } else {
+        alert('Error creating influencer. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
