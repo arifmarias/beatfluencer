@@ -388,6 +388,42 @@ async def get_users(current_user: User = Depends(require_role([UserRole.ADMIN]))
     users = await db.users.find().to_list(1000)
     return [User(**user) for user in users]
 
+@api_router.post("/upload-image")
+async def upload_image(
+    file: UploadFile = File(...),
+    current_user: User = Depends(require_role([UserRole.ADMIN, UserRole.INFLUENCER_MANAGER]))
+):
+    """Upload image to Cloudinary"""
+    try:
+        # Validate file type
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="File must be an image")
+        
+        # Read file content
+        file_content = await file.read()
+        
+        # Upload to Cloudinary
+        result = cloudinary.uploader.upload(
+            file_content,
+            folder="beatfluencer/profiles",
+            resource_type="image",
+            transformation=[
+                {"width": 400, "height": 400, "crop": "fill", "gravity": "face"},
+                {"quality": "auto", "fetch_format": "auto"}
+            ]
+        )
+        
+        return {
+            "url": result.get("secure_url"),
+            "public_id": result.get("public_id"),
+            "width": result.get("width"),
+            "height": result.get("height")
+        }
+        
+    except Exception as e:
+        logger.error(f"Error uploading image: {e}")
+        raise HTTPException(status_code=500, detail="Failed to upload image")
+
 # Influencer Routes
 @api_router.post("/influencers", response_model=Influencer)
 async def create_influencer(
