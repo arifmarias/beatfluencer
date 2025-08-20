@@ -1550,6 +1550,685 @@ const Dashboard = () => {
   );
 };
 
+// Add Influencer Form Component
+const AddInfluencerForm = ({ onClose, onSuccess }) => {
+  const { token } = useAuth();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  
+  // Form data state
+  const [formData, setFormData] = useState({
+    // Personal Information
+    account_type: 'creator',
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    division: '',
+    gender: 'male',
+    date_of_birth: '',
+    bio: '',
+    profile_image: '',
+    
+    // Categories
+    categories: [],
+    
+    // Remuneration
+    remuneration_services: [],
+    
+    // Experience
+    experience_years: '0-1',
+    total_campaigns: 0,
+    affiliated_brands: [],
+    dedicated_brands: [],
+    successful_campaigns: [],
+    industries_worked: [],
+    
+    // Payment Information
+    beneficiary_name: '',
+    account_number: '',
+    tin_number: '',
+    bank_name: '',
+    
+    // Featured Options
+    featured_category: false,
+    featured_creators: false,
+    
+    // Social Media
+    social_media_accounts: []
+  });
+
+  const divisions = [
+    'Dhaka', 'Chittagong', 'Rajshahi', 'Khulna', 'Barishal', 'Sylhet', 'Rangpur', 'Mymensingh'
+  ];
+
+  const categoryOptions = [
+    'Fashion & Style', 'Beauty & Cosmetics', 'Fitness & Health', 'Food & Cooking', 
+    'Travel', 'Lifestyle', 'Technology', 'Gaming', 'Parenting & Family', 
+    'Business & Finance', 'Education', 'Entertainment', 'Home & Garden', 
+    'Pets & Animals', 'Sports', 'Art & Creativity', 'Automotive', 
+    'Religious/Spiritual Content', 'Social Causes & NGO', 'Local Culture & Traditions', 
+    'Language Learning', 'DIY & Crafts', 'Photography', 'Music & Dance', 
+    'Comedy & Humor', 'Others'
+  ];
+
+  const industryOptions = [
+    'Fashion & Apparel', 'Beauty & Personal Care', 'Technology & Electronics', 
+    'Food & Beverage', 'Travel & Tourism', 'Health & Fitness', 'Financial Services', 
+    'Real Estate', 'Education & E-learning', 'Automotive', 'Home & Living', 
+    'Baby & Kids Products', 'Sports & Recreation', 'Entertainment & Media', 'Others'
+  ];
+
+  const socialPlatforms = [
+    'Facebook', 'Instagram', 'Youtube', 'TikTok', 'LinkedIn', 'Snapchat'
+  ];
+
+  const handleInputChange = (name, value) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleArrayChange = (name, value, checked) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: checked 
+        ? [...prev[name], value]
+        : prev[name].filter(item => item !== value)
+    }));
+  };
+
+  const addRemuneration = () => {
+    setFormData(prev => ({
+      ...prev,
+      remuneration_services: [...prev.remuneration_services, { service_name: '', rate: 0 }]
+    }));
+  };
+
+  const updateRemuneration = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      remuneration_services: prev.remuneration_services.map((item, i) => 
+        i === index ? { ...item, [field]: value } : item
+      )
+    }));
+  };
+
+  const removeRemuneration = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      remuneration_services: prev.remuneration_services.filter((_, i) => i !== index)
+    }));
+  };
+
+  const addSocialMedia = () => {
+    setFormData(prev => ({
+      ...prev,
+      social_media_accounts: [...prev.social_media_accounts, {
+        platform: 'facebook',
+        channel_name: '',
+        url: '',
+        follower_count: 0,
+        verification_status: false,
+        cpv: 0,
+        created_year: new Date().getFullYear(),
+        created_month: new Date().getMonth() + 1
+      }]
+    }));
+  };
+
+  const updateSocialMedia = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      social_media_accounts: prev.social_media_accounts.map((item, i) => 
+        i === index ? { ...item, [field]: value } : item
+      )
+    }));
+  };
+
+  const removeSocialMedia = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      social_media_accounts: prev.social_media_accounts.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      // Convert date string to ISO format
+      const submitData = {
+        ...formData,
+        date_of_birth: new Date(formData.date_of_birth).toISOString(),
+        affiliated_brands: formData.affiliated_brands.join(',').split(',').map(b => b.trim()).filter(b => b),
+      };
+
+      await axios.post(`${API}/influencers`, submitData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      onSuccess();
+    } catch (error) {
+      console.error('Error creating influencer:', error);
+      alert('Error creating influencer. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const steps = [
+    { id: 1, title: 'Personal Info', icon: Users },
+    { id: 2, title: 'Categories & Experience', icon: Star },
+    { id: 3, title: 'Payment & Features', icon: DollarSign },
+    { id: 4, title: 'Social Media', icon: Globe }
+  ];
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-6 text-white">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold">Add New Influencer</h2>
+            <Button variant="ghost" size="sm" onClick={onClose} className="text-white hover:bg-white/20">
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+          
+          {/* Step Indicator */}
+          <div className="flex items-center space-x-4 mt-6">
+            {steps.map((step) => (
+              <div key={step.id} className="flex items-center">
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                  currentStep >= step.id ? 'bg-white text-indigo-500' : 'bg-white/20 text-white'
+                }`}>
+                  <step.icon className="w-4 h-4" />
+                </div>
+                <span className={`ml-2 text-sm ${currentStep >= step.id ? 'text-white font-medium' : 'text-white/70'}`}>
+                  {step.title}
+                </span>
+                {step.id < steps.length && <ChevronDown className="w-4 h-4 ml-4 text-white/50 rotate-[-90deg]" />}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Form Content */}
+        <div className="p-6 max-h-[calc(90vh-200px)] overflow-y-auto">
+          {/* Step 1: Personal Information */}
+          {currentStep === 1 && (
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="account_type">Account Type</Label>
+                  <Select value={formData.account_type} onValueChange={(value) => handleInputChange('account_type', value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="personal">Personal</SelectItem>
+                      <SelectItem value="business">Business</SelectItem>
+                      <SelectItem value="creator">Creator</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input 
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    placeholder="Enter full name"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input 
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    placeholder="Enter email address"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input 
+                    id="phone"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    placeholder="Enter phone number"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="division">Division</Label>
+                  <Select value={formData.division} onValueChange={(value) => handleInputChange('division', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select division" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {divisions.map(division => (
+                        <SelectItem key={division} value={division}>{division}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="date_of_birth">Date of Birth</Label>
+                  <Input 
+                    id="date_of_birth"
+                    type="date"
+                    value={formData.date_of_birth}
+                    onChange={(e) => handleInputChange('date_of_birth', e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="address">Address</Label>
+                <Input 
+                  id="address"
+                  value={formData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  placeholder="Enter full address"
+                />
+              </div>
+
+              <div>
+                <Label>Gender</Label>
+                <div className="flex space-x-4 mt-2">
+                  {['male', 'female', 'others'].map(gender => (
+                    <label key={gender} className="flex items-center space-x-2">
+                      <input 
+                        type="radio" 
+                        name="gender" 
+                        value={gender}
+                        checked={formData.gender === gender}
+                        onChange={(e) => handleInputChange('gender', e.target.value)}
+                        className="text-indigo-500"
+                      />
+                      <span className="capitalize">{gender}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="bio">Bio</Label>
+                <Textarea 
+                  id="bio"
+                  value={formData.bio}
+                  onChange={(e) => handleInputChange('bio', e.target.value)}
+                  placeholder="Enter bio/description"
+                  rows="3"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Step 2: Categories & Experience */}
+          {currentStep === 2 && (
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Categories & Experience</h3>
+              
+              {/* Categories */}
+              <div>
+                <Label>Influencer Categories</Label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 max-h-48 overflow-y-auto border rounded-lg p-3">
+                  {categoryOptions.map(category => (
+                    <label key={category} className="flex items-center space-x-2 text-sm">
+                      <Checkbox 
+                        checked={formData.categories.includes(category)}
+                        onCheckedChange={(checked) => handleArrayChange('categories', category, checked)}
+                      />
+                      <span>{category}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Experience */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="experience_years">Years as Content Creator</Label>
+                  <Select value={formData.experience_years} onValueChange={(value) => handleInputChange('experience_years', value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0-1">0-1 years</SelectItem>
+                      <SelectItem value="1-3">1-3 years</SelectItem>
+                      <SelectItem value="3-5">3-5 years</SelectItem>
+                      <SelectItem value="5+">5+ years</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="total_campaigns">Total Campaigns Completed</Label>
+                  <Input 
+                    id="total_campaigns"
+                    type="number"
+                    value={formData.total_campaigns}
+                    onChange={(e) => handleInputChange('total_campaigns', parseInt(e.target.value) || 0)}
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+
+              {/* Affiliated Brands */}
+              <div>
+                <Label htmlFor="affiliated_brands">Affiliated Brands (comma-separated)</Label>
+                <Input 
+                  id="affiliated_brands"
+                  value={formData.affiliated_brands.join(', ')}
+                  onChange={(e) => handleInputChange('affiliated_brands', e.target.value.split(',').map(b => b.trim()))}
+                  placeholder="Brand 1, Brand 2, Brand 3..."
+                />
+              </div>
+
+              {/* Industries */}
+              <div>
+                <Label>Industries Worked With</Label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 max-h-48 overflow-y-auto border rounded-lg p-3">
+                  {industryOptions.map(industry => (
+                    <label key={industry} className="flex items-center space-x-2 text-sm">
+                      <Checkbox 
+                        checked={formData.industries_worked.includes(industry)}
+                        onCheckedChange={(checked) => handleArrayChange('industries_worked', industry, checked)}
+                      />
+                      <span>{industry}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Remuneration */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <Label>Remuneration Services</Label>
+                  <Button 
+                    type="button" 
+                    size="sm" 
+                    onClick={addRemuneration}
+                    className="bg-green-500 hover:bg-green-600"
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add Service
+                  </Button>
+                </div>
+                
+                <div className="space-y-3">
+                  {formData.remuneration_services.map((service, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <Input 
+                        placeholder="Service name"
+                        value={service.service_name}
+                        onChange={(e) => updateRemuneration(index, 'service_name', e.target.value)}
+                        className="flex-1"
+                      />
+                      <Input 
+                        type="number"
+                        placeholder="Rate (BDT)"
+                        value={service.rate}
+                        onChange={(e) => updateRemuneration(index, 'rate', parseFloat(e.target.value) || 0)}
+                        className="w-32"
+                      />
+                      <Button 
+                        type="button" 
+                        size="sm" 
+                        variant="destructive"
+                        onClick={() => removeRemuneration(index)}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Payment & Features */}
+          {currentStep === 3 && (
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Information & Features</h3>
+              
+              {/* Payment Information */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="beneficiary_name">Beneficiary Name</Label>
+                  <Input 
+                    id="beneficiary_name"
+                    value={formData.beneficiary_name}
+                    onChange={(e) => handleInputChange('beneficiary_name', e.target.value)}
+                    placeholder="Account holder name"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="account_number">Account/Card Number</Label>
+                  <Input 
+                    id="account_number"
+                    value={formData.account_number}
+                    onChange={(e) => handleInputChange('account_number', e.target.value)}
+                    placeholder="Account or card number"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="tin_number">TIN Number</Label>
+                  <Input 
+                    id="tin_number"
+                    value={formData.tin_number}
+                    onChange={(e) => handleInputChange('tin_number', e.target.value)}
+                    placeholder="Tax identification number"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="bank_name">Bank Name & Branch</Label>
+                  <Input 
+                    id="bank_name"
+                    value={formData.bank_name}
+                    onChange={(e) => handleInputChange('bank_name', e.target.value)}
+                    placeholder="Bank name with branch"
+                  />
+                </div>
+              </div>
+
+              {/* Featured Options */}
+              <div className="space-y-4">
+                <h4 className="font-medium text-gray-900">Featured in Landing Page</h4>
+                
+                <div className="flex items-center space-x-4">
+                  <label className="flex items-center space-x-2">
+                    <Checkbox 
+                      checked={formData.featured_category}
+                      onCheckedChange={(checked) => handleInputChange('featured_category', checked)}
+                    />
+                    <span>Featured in Category</span>
+                  </label>
+
+                  <label className="flex items-center space-x-2">
+                    <Checkbox 
+                      checked={formData.featured_creators}
+                      onCheckedChange={(checked) => handleInputChange('featured_creators', checked)}
+                    />
+                    <span>Featured in Creators Section</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Social Media */}
+          {currentStep === 4 && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">Social Media Accounts</h3>
+                <Button 
+                  type="button" 
+                  size="sm" 
+                  onClick={addSocialMedia}
+                  className="bg-blue-500 hover:bg-blue-600"
+                >
+                  <Plus className="w-4 h-4 mr-1" />
+                  Add Platform
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                {formData.social_media_accounts.map((account, index) => (
+                  <div key={index} className="border rounded-lg p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">Social Media Account #{index + 1}</h4>
+                      <Button 
+                        type="button" 
+                        size="sm" 
+                        variant="destructive"
+                        onClick={() => removeSocialMedia(index)}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div>
+                        <Label>Platform</Label>
+                        <Select 
+                          value={account.platform} 
+                          onValueChange={(value) => updateSocialMedia(index, 'platform', value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {socialPlatforms.map(platform => (
+                              <SelectItem key={platform} value={platform.toLowerCase()}>
+                                {platform}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label>Channel Name</Label>
+                        <Input 
+                          value={account.channel_name}
+                          onChange={(e) => updateSocialMedia(index, 'channel_name', e.target.value)}
+                          placeholder="@username or channel name"
+                        />
+                      </div>
+
+                      <div>
+                        <Label>Profile URL</Label>
+                        <Input 
+                          value={account.url}
+                          onChange={(e) => updateSocialMedia(index, 'url', e.target.value)}
+                          placeholder="https://..."
+                        />
+                      </div>
+
+                      <div>
+                        <Label>Follower Count</Label>
+                        <Input 
+                          type="number"
+                          value={account.follower_count}
+                          onChange={(e) => updateSocialMedia(index, 'follower_count', parseInt(e.target.value) || 0)}
+                          placeholder="0"
+                        />
+                      </div>
+
+                      <div>
+                        <Label>Created Year</Label>
+                        <Input 
+                          type="number"
+                          value={account.created_year}
+                          onChange={(e) => updateSocialMedia(index, 'created_year', parseInt(e.target.value) || new Date().getFullYear())}
+                          min="2000"
+                          max={new Date().getFullYear()}
+                        />
+                      </div>
+
+                      <div>
+                        <Label>Created Month</Label>
+                        <Select 
+                          value={account.created_month?.toString()} 
+                          onValueChange={(value) => updateSocialMedia(index, 'created_month', parseInt(value))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from({length: 12}, (_, i) => (
+                              <SelectItem key={i+1} value={(i+1).toString()}>
+                                {new Date(0, i).toLocaleString('default', { month: 'long' })}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        checked={account.verification_status}
+                        onCheckedChange={(checked) => updateSocialMedia(index, 'verification_status', checked)}
+                      />
+                      <span className="text-sm">Verified Account</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="border-t bg-gray-50 p-6 flex items-center justify-between">
+          <div className="flex space-x-3">
+            {currentStep > 1 && (
+              <Button 
+                variant="outline" 
+                onClick={() => setCurrentStep(prev => prev - 1)}
+              >
+                Previous
+              </Button>
+            )}
+          </div>
+
+          <div className="flex space-x-3">
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            
+            {currentStep < 4 ? (
+              <Button onClick={() => setCurrentStep(prev => prev + 1)}>
+                Next
+              </Button>
+            ) : (
+              <Button 
+                onClick={handleSubmit} 
+                disabled={loading}
+                className="bg-green-500 hover:bg-green-600"
+              >
+                {loading ? 'Creating...' : 'Create Influencer'}
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Influencers Management Page
 const InfluencersPage = () => {
   const [showAddForm, setShowAddForm] = useState(false);
