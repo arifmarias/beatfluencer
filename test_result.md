@@ -167,11 +167,11 @@ frontend:
 
   - task: "Connect DetailedInfluencerCard View Profile buttons to InfluencerProfileModal"
     implemented: true
-    working: "unknown"
+    working: true
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
@@ -179,6 +179,9 @@ frontend:
       - working: "unknown"
         agent: "main"
         comment: "IMPLEMENTED FIX: Added showProfile state to DetailedInfluencerCard component, added onClick handler to View Profile button to setShowProfile(true), and added conditional rendering of InfluencerProfileModal with proper onClose handler"
+      - working: true
+        agent: "testing"
+        comment: "TESTING SUCCESSFUL: ✅ Verified View Profile buttons in Fashion & Style category modal successfully open InfluencerProfileModal. ✅ Modal shows correct influencer data (tested Mehazabien Chowdhury). ✅ Footer with Close and Contact buttons is visible and functional - confirming this is the same fixed InfluencerProfileModal. ✅ Close button works perfectly. ✅ Multiple View Profile buttons tested successfully. ✅ Modal functionality (open/close/scroll) works properly. All requirements met!"
 
 metadata:
   created_by: "main_agent"
