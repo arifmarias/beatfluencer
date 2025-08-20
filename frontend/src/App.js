@@ -675,6 +675,253 @@ const demoInfluencers = {
     }
   ]
 };
+// Enhanced Influencer Card Component for Modal
+const DetailedInfluencerCard = ({ influencer }) => {
+  const { user } = useAuth();
+  const totalFollowers = influencer.social_media_accounts?.reduce((sum, account) => sum + account.follower_count, 0) || 0;
+  const canSeeRemuneration = user?.role !== 'campaign_manager';
+  const minRate = influencer.remuneration_services?.length > 0 
+    ? Math.min(...influencer.remuneration_services.map(service => service.rate)) 
+    : null;
+  
+  const age = influencer.date_of_birth 
+    ? new Date().getFullYear() - new Date(influencer.date_of_birth).getFullYear()
+    : null;
+
+  return (
+    <Card className="group hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-white border-0 shadow-lg overflow-hidden h-full">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/40 to-purple-50/40 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+      
+      {/* Profile Image Header */}
+      <div className="relative h-48 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 overflow-hidden">
+        <img 
+          src={influencer.profile_image} 
+          alt={influencer.name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        
+        {/* Verification Badge */}
+        {influencer.verification_status && (
+          <div className="absolute top-4 right-4 bg-blue-500 text-white p-2 rounded-full shadow-lg">
+            <Verified className="w-4 h-4" />
+          </div>
+        )}
+        
+        {/* Featured Badge */}
+        {influencer.featured_creators && (
+          <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-full shadow-lg">
+            <div className="flex items-center space-x-1">
+              <Crown className="w-3 h-3" />
+              <span className="text-xs font-bold">Featured</span>
+            </div>
+          </div>
+        )}
+        
+        {/* Profile Info Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+          <h3 className="text-xl font-bold mb-1">{influencer.name}</h3>
+          <div className="flex items-center space-x-3 text-sm">
+            <Badge className="bg-white/20 text-white capitalize backdrop-blur-sm">
+              {influencer.account_type}
+            </Badge>
+            {age && (
+              <span className="flex items-center">
+                <Calendar className="w-3 h-3 mr-1" />
+                {age} years
+              </span>
+            )}
+            <span className="flex items-center">
+              <MapPin className="w-3 h-3 mr-1" />
+              {influencer.division}
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <CardContent className="relative p-6 space-y-4">
+        {/* Bio */}
+        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
+          {influencer.bio}
+        </p>
+        
+        {/* Total Followers */}
+        <div className="flex items-center justify-center bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-4">
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-1">
+              <Users className="w-5 h-5 text-indigo-600" />
+              <span className="text-2xl font-bold text-gray-900">
+                {totalFollowers > 1000000 
+                  ? `${(totalFollowers / 1000000).toFixed(1)}M` 
+                  : totalFollowers > 1000 
+                  ? `${(totalFollowers / 1000).toFixed(0)}K`
+                  : totalFollowers.toLocaleString()
+                }
+              </span>
+            </div>
+            <span className="text-sm text-gray-600 font-medium">Total Followers</span>
+          </div>
+        </div>
+        
+        {/* Social Media Platforms */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-bold text-gray-800 flex items-center">
+            <Globe className="w-4 h-4 mr-2 text-indigo-600" />
+            Social Media Presence
+          </h4>
+          <div className="space-y-2">
+            {influencer.social_media_accounts?.map((account, index) => (
+              <div key={index} className="flex items-center justify-between bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors">
+                <div className="flex items-center space-x-3">
+                  {account.platform === 'instagram' && <Instagram className="w-5 h-5 text-pink-500" />}
+                  {account.platform === 'youtube' && <Youtube className="w-5 h-5 text-red-500" />}
+                  {account.platform === 'facebook' && <Facebook className="w-5 h-5 text-blue-500" />}
+                  {account.platform === 'tiktok' && <Video className="w-5 h-5 text-black" />}
+                  <div>
+                    <div className="flex items-center space-x-2">
+                      <span className="font-medium text-gray-900 capitalize">{account.platform}</span>
+                      {account.verification_status && (
+                        <Verified className="w-3 h-3 text-blue-500" />
+                      )}
+                    </div>
+                    <span className="text-xs text-gray-500">{account.channel_name}</span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-gray-900">
+                    {account.follower_count > 1000000 
+                      ? `${(account.follower_count / 1000000).toFixed(1)}M` 
+                      : account.follower_count > 1000 
+                      ? `${(account.follower_count / 1000).toFixed(0)}K`
+                      : account.follower_count.toLocaleString()
+                    }
+                  </div>
+                  <span className="text-xs text-gray-500">followers</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Categories */}
+        <div className="space-y-2">
+          <h4 className="text-sm font-bold text-gray-800 flex items-center">
+            <Layers className="w-4 h-4 mr-2 text-purple-600" />
+            Content Categories
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {influencer.categories?.map((category, index) => (
+              <Badge key={index} variant="outline" className="border-purple-200 text-purple-700 bg-purple-50">
+                {category}
+              </Badge>
+            ))}
+          </div>
+        </div>
+        
+        {/* Campaign Stats & Pricing */}
+        <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-1 mb-1">
+              <Award className="w-4 h-4 text-green-600" />
+              <span className="text-lg font-bold text-gray-900">{influencer.total_campaigns}</span>
+            </div>
+            <span className="text-xs text-gray-600">Campaigns</span>
+          </div>
+          
+          {canSeeRemuneration && minRate && (
+            <div className="text-center">
+              <div className="flex items-center justify-center space-x-1 mb-1">
+                <DollarSign className="w-4 h-4 text-green-600" />
+                <span className="text-lg font-bold text-green-700">৳{minRate.toLocaleString()}</span>
+              </div>
+              <span className="text-xs text-gray-600">Starting from</span>
+            </div>
+          )}
+        </div>
+        
+        {/* Action Button */}
+        <Button className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+          <Eye className="w-4 h-4 mr-2" />
+          View Full Profile
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Category Modal Component
+const CategoryModal = ({ category, isOpen, onClose, navigate }) => {
+  const influencers = demoInfluencers[category?.name] || [];
+  
+  if (!isOpen || !category) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-7xl max-h-[90vh] overflow-hidden animate-scale-in">
+        {/* Modal Header */}
+        <div className={`bg-gradient-to-r ${category.color} p-8 text-white relative overflow-hidden`}>
+          <div className="absolute inset-0 bg-black/10"></div>
+          <div className="relative flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                <category.icon className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h2 className="text-4xl font-bold mb-2">{category.name} Influencers</h2>
+                <p className="text-white/90 text-lg">Featured creators in this category</p>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="text-white hover:bg-white/20 p-3 rounded-xl"
+            >
+              <X className="w-6 h-6" />
+            </Button>
+          </div>
+        </div>
+        
+        {/* Modal Content */}
+        <div className="p-8 max-h-[calc(90vh-200px)] overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            {/* 9 Influencer Cards */}
+            {influencers.slice(0, 9).map((influencer) => (
+              <DetailedInfluencerCard key={influencer.id} influencer={influencer} />
+            ))}
+            
+            {/* 10th Card - Full List */}
+            <Card 
+              className="cursor-pointer hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-dashed border-indigo-300 flex items-center justify-center min-h-[500px]"
+              onClick={() => navigate(`/category/${category.name.toLowerCase().replace(/\s+/g, '-')}`)}
+            >
+              <CardContent className="text-center p-8">
+                <div className="w-24 h-24 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl animate-pulse">
+                  <ExternalLink className="w-12 h-12 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">View All</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Explore the complete collection of {category.name} influencers in our comprehensive database
+                </p>
+                <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300 w-full">
+                  <Layers className="w-5 h-5 mr-2" />
+                  Browse Full Category
+                </Button>
+                <div className="mt-6">
+                  <Badge className="bg-indigo-100 text-indigo-800 px-6 py-3 text-lg font-semibold">
+                    {influencers.length}+ creators available
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Landing Page Component
 const LandingPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
