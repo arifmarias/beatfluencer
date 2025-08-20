@@ -440,7 +440,7 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
         </div>
 
         {/* Refined Content */}
-        <div className="p-8 max-h-[calc(95vh-200px)] overflow-y-auto">
+        <div className="p-8 flex-1 overflow-y-auto min-h-0">
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
             
             {/* Left Column */}
