@@ -749,7 +749,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         )}
         
         {/* Collapsible Social Media Section */}
-        <div className="border-t border-gray-100 pt-1 mb-2">
+        <div className="border-t border-gray-100 pt-1 mb-3">
           <Button
             variant="ghost"
             size="sm"
@@ -762,14 +762,14 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
           </Button>
           
           {showSocialMedia && (
-            <div className="mt-1 space-y-1 animate-fade-in">
+            <div className="mt-2 space-y-1.5 animate-fade-in">
               {influencer.social_media_accounts?.slice(0, 3).map((account, index) => (
-                <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-1.5 text-xs">
-                  <div className="flex items-center space-x-1">
-                    {account.platform === 'instagram' && <Instagram className="w-3 h-3 text-pink-500" />}
-                    {account.platform === 'youtube' && <Youtube className="w-3 h-3 text-red-500" />}
-                    {account.platform === 'facebook' && <Facebook className="w-3 h-3 text-blue-500" />}
-                    {account.platform === 'tiktok' && <Video className="w-3 h-3 text-black" />}
+                <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-2 text-xs">
+                  <div className="flex items-center space-x-2">
+                    {account.platform === 'instagram' && <Instagram className="w-4 h-4 text-pink-500" />}
+                    {account.platform === 'youtube' && <Youtube className="w-4 h-4 text-red-500" />}
+                    {account.platform === 'facebook' && <Facebook className="w-4 h-4 text-blue-500" />}
+                    {account.platform === 'tiktok' && <Video className="w-4 h-4 text-black" />}
                     <span className="font-medium capitalize text-xs">{account.platform}</span>
                   </div>
                   <span className="font-semibold text-gray-900 text-xs">
