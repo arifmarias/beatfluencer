@@ -501,7 +501,9 @@ class BeatfluencerAPITester:
 
 def main():
     tester = BeatfluencerAPITester()
-    return tester.run_all_tests()
+    # Run the specific tests for demo data removal verification
+    success = tester.run_demo_data_removal_tests()
+    return 0 if success else 1
 
 if __name__ == "__main__":
     sys.exit(main())
