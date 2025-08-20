@@ -1046,37 +1046,61 @@ const LandingPage = () => {
       <Navigation />
       
       {/* Hero Search Section */}
-      <section className="pt-8 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Find Bangladesh's Top <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-red-600">Influencers</span>
+      <section className="pt-12 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-20 left-20 w-72 h-72 bg-indigo-400 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
+        </div>
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 mb-6">
+              <span className="text-sm font-medium text-gray-700">🇧🇩 Bangladesh's Premier Influencer Platform</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Discover Amazing{' '}
+              <span className="relative">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600">
+                  Creators
+                </span>
+                <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-blue-200 via-purple-200 to-indigo-200 rounded-full opacity-50"></div>
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover and connect with the most impactful content creators across all platforms in Bangladesh. 
-              Search with natural language and find your brand's perfect match.
+            
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Connect with Bangladesh's most talented content creators across all platforms. 
+              Use intelligent search to find the perfect match for your brand.
             </p>
           </div>
 
-          {/* Natural Language Search */}
-          <div className="max-w-5xl mx-auto space-y-6">
-            <div className="flex gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
-                <Input
-                  placeholder="e.g., 'Instagram influencer with over 100,000+ followers working in Lifestyle with budget BDT 5,000'"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-16 pl-14 text-lg border-2 border-gray-200 rounded-xl shadow-sm focus:border-green-500 focus:ring-green-500"
-                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                />
+          {/* Enhanced Search Interface */}
+          <div className="max-w-4xl mx-auto space-y-8">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-2xl blur-lg opacity-20"></div>
+              <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 p-2">
+                <div className="flex gap-3">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
+                    <Input
+                      placeholder="e.g., 'Instagram influencer with over 100,000+ followers working in Lifestyle with budget BDT 5,000'"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="h-16 pl-16 pr-6 text-lg border-0 bg-transparent focus:ring-0 placeholder:text-gray-400 font-medium"
+                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                    />
+                  </div>
+                  <Button 
+                    onClick={handleSearch}
+                    className="h-16 px-8 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
+                  >
+                    <Search className="w-5 h-5 mr-2" />
+                    Search
+                  </Button>
+                </div>
               </div>
-              <Button 
-                onClick={handleSearch}
-                className="h-16 px-8 bg-gradient-to-r from-green-600 to-red-600 hover:from-green-700 hover:to-red-700 rounded-xl shadow-lg"
-              >
-                <Search className="w-6 h-6" />
-              </Button>
             </div>
             
             {/* Advanced Search Toggle */}
@@ -1084,27 +1108,29 @@ const LandingPage = () => {
               <Button
                 variant="outline"
                 onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
-                className="border-indigo-200 text-indigo-700 hover:bg-indigo-50 px-8 py-3 rounded-full shadow-md"
+                className="bg-white/80 backdrop-blur-sm border-gray-200 text-gray-700 hover:bg-white hover:text-blue-600 px-8 py-4 rounded-2xl shadow-lg transition-all duration-300 font-medium"
               >
-                <Filter className="w-5 h-5 mr-2" />
+                <Filter className="w-5 h-5 mr-3" />
                 Advanced Search & Filters
-                {showAdvancedSearch ? <ChevronUp className="w-5 h-5 ml-2" /> : <ChevronDown className="w-5 h-5 ml-2" />}
+                <ChevronDown className={`w-5 h-5 ml-3 transition-transform duration-300 ${showAdvancedSearch ? 'rotate-180' : ''}`} />
               </Button>
             </div>
             
             {/* Advanced Search Panel */}
             {showAdvancedSearch && (
-              <Card className="p-8 bg-white/95 backdrop-blur-sm border-0 shadow-xl rounded-2xl animate-fade-in">
-                <div className="space-y-8">
+              <Card className="bg-white/95 backdrop-blur-xl border-0 shadow-2xl rounded-3xl overflow-hidden animate-fade-in">
+                <div className="p-10 space-y-10">
                   {/* Platform & Basic Filters */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div>
-                      <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
-                        <Globe className="w-4 h-4 mr-2 text-indigo-600" />
+                      <Label className="text-sm font-bold text-gray-800 mb-4 block flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mr-3">
+                          <Globe className="w-4 h-4 text-white" />
+                        </div>
                         Platform
                       </Label>
                       <Select value={filters.platform} onValueChange={(value) => setFilters({...filters, platform: value})}>
-                        <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                        <SelectTrigger className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors">
                           <SelectValue placeholder="Select platform" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1138,12 +1164,14 @@ const LandingPage = () => {
                     </div>
                     
                     <div>
-                      <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
-                        <Users2 className="w-4 h-4 mr-2 text-purple-600" />
+                      <Label className="text-sm font-bold text-gray-800 mb-4 block flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                          <Users2 className="w-4 h-4 text-white" />
+                        </div>
                         Gender
                       </Label>
                       <Select value={filters.gender[0] || ''} onValueChange={(value) => setFilters({...filters, gender: value ? [value] : []})}>
-                        <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                        <SelectTrigger className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors">
                           <SelectValue placeholder="Select gender" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1155,12 +1183,14 @@ const LandingPage = () => {
                     </div>
                     
                     <div>
-                      <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
-                        <BarChart3 className="w-4 h-4 mr-2 text-green-600" />
+                      <Label className="text-sm font-bold text-gray-800 mb-4 block flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center mr-3">
+                          <BarChart3 className="w-4 h-4 text-white" />
+                        </div>
                         Experience
                       </Label>
                       <Select value={filters.experience} onValueChange={(value) => setFilters({...filters, experience: value})}>
-                        <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                        <SelectTrigger className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors">
                           <SelectValue placeholder="Experience level" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1173,12 +1203,14 @@ const LandingPage = () => {
                     </div>
                     
                     <div>
-                      <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
-                        <MapPin className="w-4 h-4 mr-2 text-red-600" />
+                      <Label className="text-sm font-bold text-gray-800 mb-4 block flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                          <MapPin className="w-4 h-4 text-white" />
+                        </div>
                         Location
                       </Label>
                       <Select value={filters.division} onValueChange={(value) => setFilters({...filters, division: value})}>
-                        <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                        <SelectTrigger className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors">
                           <SelectValue placeholder="Select division" />
                         </SelectTrigger>
                         <SelectContent>
@@ -1191,15 +1223,17 @@ const LandingPage = () => {
                   </div>
 
                   {/* Advanced Filters */}
-                  <div className="border-t border-gray-200 pt-6">
-                    <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center">
-                      <Target className="w-5 h-5 mr-2 text-indigo-600" />
+                  <div className="border-t border-gray-200 pt-8">
+                    <h3 className="text-xl font-bold text-gray-800 mb-8 flex items-center">
+                      <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mr-4">
+                        <Target className="w-5 h-5 text-white" />
+                      </div>
                       Advanced Filters
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                       <div>
-                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
-                          <Users className="w-4 h-4 mr-2 text-blue-600" />
+                        <Label className="text-sm font-bold text-gray-800 mb-4 block flex items-center">
+                          <Users className="w-5 h-5 mr-2 text-blue-600" />
                           Follower Range
                         </Label>
                         <div className="grid grid-cols-2 gap-3">
@@ -1207,20 +1241,20 @@ const LandingPage = () => {
                             placeholder="Min followers"
                             value={filters.minFollowers}
                             onChange={(e) => setFilters({...filters, minFollowers: e.target.value})}
-                            className="h-12 border-2 border-gray-200 rounded-xl"
+                            className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors"
                           />
                           <Input
                             placeholder="Max followers"
                             value={filters.maxFollowers}
                             onChange={(e) => setFilters({...filters, maxFollowers: e.target.value})}
-                            className="h-12 border-2 border-gray-200 rounded-xl"
+                            className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors"
                           />
                         </div>
                       </div>
                       
                       <div>
-                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
-                          <Calendar className="w-4 h-4 mr-2 text-orange-600" />
+                        <Label className="text-sm font-bold text-gray-800 mb-4 block flex items-center">
+                          <Calendar className="w-5 h-5 mr-2 text-orange-600" />
                           Age Range
                         </Label>
                         <div className="grid grid-cols-2 gap-3">
@@ -1228,20 +1262,20 @@ const LandingPage = () => {
                             placeholder="Min age"
                             value={filters.minAge}
                             onChange={(e) => setFilters({...filters, minAge: e.target.value})}
-                            className="h-12 border-2 border-gray-200 rounded-xl"
+                            className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors"
                           />
                           <Input
                             placeholder="Max age"
                             value={filters.maxAge}
                             onChange={(e) => setFilters({...filters, maxAge: e.target.value})}
-                            className="h-12 border-2 border-gray-200 rounded-xl"
+                            className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors"
                           />
                         </div>
                       </div>
                       
                       <div>
-                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
-                          <DollarSign className="w-4 h-4 mr-2 text-green-600" />
+                        <Label className="text-sm font-bold text-gray-800 mb-4 block flex items-center">
+                          <DollarSign className="w-5 h-5 mr-2 text-green-600" />
                           Budget Range (BDT)
                         </Label>
                         <div className="grid grid-cols-2 gap-3">
@@ -1249,24 +1283,24 @@ const LandingPage = () => {
                             placeholder="Min budget"
                             value={filters.minBudget}
                             onChange={(e) => setFilters({...filters, minBudget: e.target.value})}
-                            className="h-12 border-2 border-gray-200 rounded-xl"
+                            className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors"
                           />
                           <Input
                             placeholder="Max budget"
                             value={filters.maxBudget}
                             onChange={(e) => setFilters({...filters, maxBudget: e.target.value})}
-                            className="h-12 border-2 border-gray-200 rounded-xl"
+                            className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors"
                           />
                         </div>
                       </div>
                       
                       <div>
-                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
-                          <UserCheck className="w-4 h-4 mr-2 text-purple-600" />
+                        <Label className="text-sm font-bold text-gray-800 mb-4 block flex items-center">
+                          <UserCheck className="w-5 h-5 mr-2 text-purple-600" />
                           Account Type
                         </Label>
                         <Select value={filters.accountType} onValueChange={(value) => setFilters({...filters, accountType: value})}>
-                          <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                          <SelectTrigger className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors">
                             <SelectValue placeholder="Select type" />
                           </SelectTrigger>
                           <SelectContent>
@@ -1278,12 +1312,12 @@ const LandingPage = () => {
                       </div>
                       
                       <div>
-                        <Label className="text-sm font-bold text-gray-800 mb-3 block flex items-center">
-                          <Star className="w-4 h-4 mr-2 text-yellow-600" />
+                        <Label className="text-sm font-bold text-gray-800 mb-4 block flex items-center">
+                          <Star className="w-5 h-5 mr-2 text-yellow-600" />
                           Verification
                         </Label>
                         <Select value={filters.verified} onValueChange={(value) => setFilters({...filters, verified: value})}>
-                          <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl">
+                          <SelectTrigger className="h-14 border-2 border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition-colors">
                             <SelectValue placeholder="Verification status" />
                           </SelectTrigger>
                           <SelectContent>
@@ -1296,18 +1330,21 @@ const LandingPage = () => {
                   </div>
 
                   {/* Apply Filters Button */}
-                  <div className="flex justify-center pt-6 border-t border-gray-200">
+                  <div className="flex justify-center pt-8 border-t border-gray-200">
                     <Button 
                       onClick={handleSearch}
-                      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-12 py-4 rounded-xl text-lg font-semibold shadow-lg transform hover:scale-105 transition-all duration-300"
+                      className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white px-16 py-4 rounded-2xl text-lg font-semibold shadow-xl transform hover:scale-105 transition-all duration-300"
                     >
-                      <Search className="w-5 h-5 mr-2" />
+                      <Search className="w-5 h-5 mr-3" />
                       Apply Filters & Search
                     </Button>
                   </div>
                 </div>
               </Card>
             )}
+          </div>
+        </div>
+      </section>
           </div>
         </div>
       </section>
