@@ -1678,6 +1678,7 @@ function App() {
                 <UsersPage />
               </ProtectedRoute>
             } />
+          </Routes>
         </BrowserRouter>
       </AuthProvider>
     </div>
