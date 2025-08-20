@@ -107,6 +107,12 @@ class SocialMediaAccount(BaseModel):
     created_year: int
     created_month: int
 
+class SuccessfulCampaign(BaseModel):
+    title: str
+    link: str
+    metrics: str
+    media_url: Optional[str] = None
+
 class RemunerationService(BaseModel):
     service_name: str
     rate: float
@@ -117,6 +123,7 @@ class DedicatedBrand(BaseModel):
 
 class Influencer(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    # Personal Information
     account_type: AccountType
     name: str
     email: EmailStr
@@ -126,21 +133,38 @@ class Influencer(BaseModel):
     gender: Gender
     date_of_birth: datetime
     bio: Optional[str] = None
+    profile_image: Optional[str] = None
+    
+    # Influencer Categories
     categories: List[str] = []
+    
+    # Remuneration
     remuneration_services: List[RemunerationService] = []
-    experience_years: str
+    
+    # Experience
+    experience_years: str  # "0-1", "1-3", "3-5", "5+"
     total_campaigns: int = 0
-    affiliated_brands: List[str] = []
+    affiliated_brands: List[str] = []  # comma-separated brands as chips
     dedicated_brands: List[DedicatedBrand] = []
+    successful_campaigns: List[SuccessfulCampaign] = []
     industries_worked: List[str] = []
+    
+    # Payment Information
     beneficiary_name: Optional[str] = None
     account_number: Optional[str] = None
     tin_number: Optional[str] = None
     bank_name: Optional[str] = None
+    
+    # Featured Options
     featured_category: bool = False
     featured_creators: bool = False
+    
+    # Social Media
     social_media_accounts: List[SocialMediaAccount] = []
-    status: str = "draft"  # draft or published
+    
+    # System fields
+    verification_status: bool = False
+    status: str = "active"  # active, inactive, pending
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
