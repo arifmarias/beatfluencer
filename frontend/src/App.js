@@ -1623,8 +1623,86 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
   ];
 
   const socialPlatforms = [
-    'Facebook', 'Instagram', 'Youtube', 'TikTok', 'LinkedIn', 'Snapchat'
+    { id: 'facebook', name: 'Facebook', baseUrl: 'https://facebook.com/' },
+    { id: 'instagram', name: 'Instagram', baseUrl: 'https://instagram.com/' },
+    { id: 'youtube', name: 'Youtube', baseUrl: 'https://youtube.com/' },
+    { id: 'tiktok', name: 'TikTok', baseUrl: 'https://tiktok.com/' },
+    { id: 'linkedin', name: 'LinkedIn', baseUrl: 'https://linkedin.com/' },
+    { id: 'snapchat', name: 'Snapchat', baseUrl: 'https://snapchat.com/' }
   ];
+
+  const handlePlatformSelection = (platformId, checked) => {
+    setFormData(prev => {
+      const newActivePlatforms = checked 
+        ? [...prev.active_platforms, platformId]
+        : prev.active_platforms.filter(id => id !== platformId);
+
+      // Create or remove social media account for this platform
+      let newSocialMediaAccounts = [...prev.social_media_accounts];
+      
+      if (checked) {
+        // Add new account for this platform
+        const platform = socialPlatforms.find(p => p.id === platformId);
+        newSocialMediaAccounts.push({
+          platform: platformId,
+          platform_name: platform.name,
+          channel_name: '',
+          url: '',
+          follower_count: 0,
+          verification_status: false,
+          cpv: 0,
+          created_year: new Date().getFullYear(),
+          created_month: new Date().getMonth() + 1
+        });
+      } else {
+        // Remove account for this platform
+        newSocialMediaAccounts = newSocialMediaAccounts.filter(
+          account => account.platform !== platformId
+        );
+      }
+
+      return {
+        ...prev,
+        active_platforms: newActivePlatforms,
+        social_media_accounts: newSocialMediaAccounts
+      };
+    });
+  };
+
+  const updateSocialMediaByPlatform = (platformId, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      social_media_accounts: prev.social_media_accounts.map(account => 
+        account.platform === platformId ? { ...account, [field]: value } : account
+      )
+    }));
+  };
+
+  const checkUrlExists = async (url, platformId) => {
+    if (!url.trim()) {
+      setUrlErrors(prev => ({ ...prev, [platformId]: '' }));
+      return;
+    }
+
+    try {
+      const response = await axios.get(`${API}/influencers/check-url`, {
+        params: { url: url.trim() },
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      if (response.data.exists) {
+        setUrlErrors(prev => ({ 
+          ...prev, 
+          [platformId]: 'This URL is already registered by another influencer' 
+        }));
+      } else {
+        setUrlErrors(prev => ({ ...prev, [platformId]: '' }));
+      }
+    } catch (error) {
+      // If endpoint doesn't exist yet, just clear the error
+      setUrlErrors(prev => ({ ...prev, [platformId]: '' }));
+    }
+  };
 
   const handleInputChange = (name, value) => {
     setFormData(prev => ({ ...prev, [name]: value }));
