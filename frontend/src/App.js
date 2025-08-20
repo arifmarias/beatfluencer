@@ -1231,7 +1231,7 @@ const LandingPage = () => {
       setFeaturedInfluencers(featured);
     } catch (error) {
       console.error('Error fetching featured influencers:', error);
-      // Fallback to empty array when no data available
+      // No demo data fallback - show empty state
       setFeaturedInfluencers([]);
     }
   };
