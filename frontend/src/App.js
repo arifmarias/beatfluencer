@@ -1110,32 +1110,55 @@ const LandingPage = () => {
 
   const fetchFeaturedInfluencers = async () => {
     try {
-      const response = await axios.get(`${API}/influencers?status=published`, {
+      const response = await axios.get(`${API}/influencers`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const featured = response.data.filter(inf => inf.featured_creators).slice(0, 8);
       setFeaturedInfluencers(featured);
     } catch (error) {
       console.error('Error fetching featured influencers:', error);
+      // Fallback to demo data for featured influencers
+      const demoFeatured = Object.values(demoInfluencers).flat().filter(inf => inf.featured_creators).slice(0, 8);
+      setFeaturedInfluencers(demoFeatured);
     }
   };
 
   const fetchCategoryInfluencers = async () => {
-    const categoryData = {};
-    for (const category of categories) {
-      try {
-        const response = await axios.get(
-          `${API}/search/influencers?category=${encodeURIComponent(category.name)}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const featured = response.data.filter(inf => inf.featured_category).slice(0, 9);
-        categoryData[category.name] = featured;
-      } catch (error) {
-        console.error(`Error fetching ${category.name} influencers:`, error);
-        categoryData[category.name] = [];
-      }
+    try {
+      const response = await axios.get(`${API}/influencers`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      const categoryData = {};
+      
+      // Organize all influencers by their categories
+      response.data.forEach(influencer => {
+        if (influencer.categories && Array.isArray(influencer.categories)) {
+          influencer.categories.forEach(category => {
+            if (!categoryData[category]) {
+              categoryData[category] = [];
+            }
+            categoryData[category].push(influencer);
+          });
+        }
+      });
+      
+      // Limit each category to 9 influencers and merge with demo data if needed
+      categories.forEach(category => {
+        const realInfluencers = categoryData[category.name] || [];
+        const demoData = demoInfluencers[category.name] || [];
+        
+        // Use real influencers first, then fill with demo data if needed
+        const combined = [...realInfluencers, ...demoData].slice(0, 9);
+        categoryData[category.name] = combined;
+      });
+      
+      setCategoryInfluencers(categoryData);
+    } catch (error) {
+      console.error('Error fetching category influencers:', error);
+      // Fallback to demo data only
+      setCategoryInfluencers(demoInfluencers);
     }
-    setCategoryInfluencers(categoryData);
   };
 
   const handleCategoryClick = async (category) => {
