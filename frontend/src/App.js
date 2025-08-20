@@ -787,8 +787,8 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         </div>
         
         {/* Action Button - Fixed at bottom */}
-        <div className="mt-auto">
-          <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-1.5 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200 text-xs">
+        <div className="mt-auto pt-2">
+          <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-2 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200 text-xs">
             <Eye className="w-3 h-3 mr-1" />
             View Profile
           </Button>
