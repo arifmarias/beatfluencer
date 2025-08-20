@@ -1673,7 +1673,11 @@ function App() {
                 <CategoryListPage />
               </ProtectedRoute>
             } />
-          </Routes>
+            <Route path="/users" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <UsersPage />
+              </ProtectedRoute>
+            } />
         </BrowserRouter>
       </AuthProvider>
     </div>
