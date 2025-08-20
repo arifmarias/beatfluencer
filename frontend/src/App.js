@@ -844,7 +844,7 @@ const CategoryModal = ({ category, isOpen, onClose, navigate }) => {
         
         {/* Modal Content */}
         <div className="p-8 max-h-[calc(90vh-200px)] overflow-y-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {/* 9 Influencer Cards */}
             {influencers.slice(0, 9).map((influencer) => (
               <DetailedInfluencerCard key={influencer.id} influencer={influencer} />
@@ -852,24 +852,24 @@ const CategoryModal = ({ category, isOpen, onClose, navigate }) => {
             
             {/* 10th Card - Full List */}
             <Card 
-              className="cursor-pointer hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-dashed border-indigo-300 flex items-center justify-center min-h-[500px]"
+              className="cursor-pointer hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-dashed border-indigo-300 flex items-center justify-center min-h-[400px] max-w-sm"
               onClick={() => navigate(`/category/${category.name.toLowerCase().replace(/\s+/g, '-')}`)}
             >
-              <CardContent className="text-center p-8">
-                <div className="w-24 h-24 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl animate-pulse">
-                  <ExternalLink className="w-12 h-12 text-white" />
+              <CardContent className="text-center p-6">
+                <div className="w-20 h-20 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl animate-pulse">
+                  <ExternalLink className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">View All</h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  Explore the complete collection of {category.name} influencers in our comprehensive database
+                <h3 className="text-lg font-bold text-gray-900 mb-3">View All</h3>
+                <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                  Explore the complete collection of {category.name} influencers
                 </p>
-                <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300 w-full">
-                  <Layers className="w-5 h-5 mr-2" />
+                <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 w-full text-sm">
+                  <Layers className="w-4 h-4 mr-2" />
                   Browse Full Category
                 </Button>
-                <div className="mt-6">
-                  <Badge className="bg-indigo-100 text-indigo-800 px-6 py-3 text-lg font-semibold">
-                    {influencers.length}+ creators available
+                <div className="mt-4">
+                  <Badge className="bg-indigo-100 text-indigo-800 px-4 py-2 text-sm font-semibold">
+                    {influencers.length}+ creators
                   </Badge>
                 </div>
               </CardContent>
