@@ -909,14 +909,32 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const categories = [
+    { name: 'Fashion & Style', icon: Shirt, color: 'from-purple-500 to-indigo-500', count: 0 },
+    { name: 'Beauty & Cosmetics', icon: Palette, color: 'from-pink-500 to-purple-500', count: 0 },
+    { name: 'Fitness & Health', icon: Dumbbell, color: 'from-green-500 to-teal-500', count: 0 },
+    { name: 'Food & Cooking', icon: Utensils, color: 'from-orange-500 to-red-500', count: 0 },
+    { name: 'Travel', icon: MapPin, color: 'from-blue-500 to-cyan-500', count: 0 },
     { name: 'Lifestyle', icon: Sparkles, color: 'from-pink-500 to-rose-500', count: 0 },
     { name: 'Technology', icon: Code, color: 'from-blue-500 to-cyan-500', count: 0 },
-    { name: 'Food & Cooking', icon: Utensils, color: 'from-orange-500 to-red-500', count: 0 },
-    { name: 'Fashion & Style', icon: Shirt, color: 'from-purple-500 to-indigo-500', count: 0 },
-    { name: 'Fitness & Health', icon: Dumbbell, color: 'from-green-500 to-teal-500', count: 0 },
-    { name: 'Beauty & Cosmetics', icon: Palette, color: 'from-pink-500 to-purple-500', count: 0 },
     { name: 'Gaming', icon: Gamepad2, color: 'from-indigo-500 to-blue-500', count: 0 },
-    { name: 'Music & Entertainment', icon: Music, color: 'from-yellow-500 to-orange-500', count: 0 }
+    { name: 'Parenting & Family', icon: Users2, color: 'from-green-400 to-emerald-500', count: 0 },
+    { name: 'Business & Finance', icon: Building, color: 'from-gray-600 to-gray-800', count: 0 },
+    { name: 'Education', icon: Users, color: 'from-blue-600 to-indigo-600', count: 0 },
+    { name: 'Entertainment', icon: Star, color: 'from-yellow-500 to-orange-500', count: 0 },
+    { name: 'Home & Garden', icon: Home, color: 'from-green-500 to-teal-600', count: 0 },
+    { name: 'Pets & Animals', icon: Heart, color: 'from-pink-400 to-rose-500', count: 0 },
+    { name: 'Sports', icon: Target, color: 'from-red-500 to-orange-600', count: 0 },
+    { name: 'Art & Creativity', icon: Palette, color: 'from-purple-400 to-pink-500', count: 0 },
+    { name: 'Automotive', icon: Zap, color: 'from-gray-500 to-slate-600', count: 0 },
+    { name: 'Religious/Spiritual Content', icon: Star, color: 'from-amber-500 to-yellow-600', count: 0 },
+    { name: 'Social Causes & NGO', icon: Globe, color: 'from-emerald-500 to-green-600', count: 0 },
+    { name: 'Local Culture & Traditions', icon: Users, color: 'from-indigo-500 to-purple-600', count: 0 },
+    { name: 'Language Learning', icon: MessageCircle, color: 'from-blue-400 to-cyan-500', count: 0 },
+    { name: 'DIY & Crafts', icon: Edit, color: 'from-orange-400 to-red-500', count: 0 },
+    { name: 'Photography', icon: Camera, color: 'from-gray-600 to-slate-700', count: 0 },
+    { name: 'Music & Dance', icon: Music, color: 'from-purple-500 to-indigo-600', count: 0 },
+    { name: 'Comedy & Humor', icon: Smile, color: 'from-yellow-400 to-orange-500', count: 0 },
+    { name: 'Others', icon: Layers, color: 'from-gray-400 to-gray-600', count: 0 }
   ];
 
   const [filters, setFilters] = useState({
