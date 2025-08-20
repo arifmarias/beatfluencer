@@ -1555,6 +1555,7 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
   const { token } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   
   // Form data state
   const [formData, setFormData] = useState({
