@@ -106,28 +106,34 @@ user_problem_statement: "Fix the 'View all' card size to match other influencer 
 
 frontend:
   - task: "Fix View All card size mismatch"
-    implemented: false
-    working: false
+    implemented: true
+    working: true
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "DetailedInfluencerCard has height 420px but View All card has height 400px - size mismatch identified"
+      - working: true
+        agent: "main"
+        comment: "FIXED: View All card height changed from 400px to 420px. Testing confirms both cards now have matching heights of 420px"
   
   - task: "Restore Social Media Presence collapsible section"
     implemented: true
-    working: "unknown"
+    working: true
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "unknown"
         agent: "main"
         comment: "Social Media Presence section exists in DetailedInfluencerCard (lines 752-787) with proper collapsible functionality - need to verify if it's visible and working correctly"
+      - working: true
+        agent: "main"
+        comment: "VERIFIED: Social Media Presence collapsible is working perfectly. Found 3 Social Media buttons, tested expand/collapse functionality successfully"
 
 metadata:
   created_by: "main_agent"
