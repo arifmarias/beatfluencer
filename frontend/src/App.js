@@ -1383,13 +1383,13 @@ const LandingPage = () => {
                 onClick={() => handleCategoryClick(category)}
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-10`}></div>
-                <CardContent className="relative p-8 text-center">
-                  <div className={`w-20 h-20 bg-gradient-to-br ${category.color} rounded-2xl flex items-center justify-center mx-auto mb-6 transform transition-transform duration-500 hover:rotate-6 hover:scale-105 shadow-lg`}>
-                    <category.icon className="w-10 h-10 text-white" />
+                <CardContent className="relative p-4 text-center">
+                  <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mx-auto mb-3 transform transition-transform duration-500 hover:rotate-6 hover:scale-105 shadow-lg`}>
+                    <category.icon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{category.name}</h3>
+                  <h3 className="text-sm font-bold text-gray-900 mb-2">{category.name}</h3>
                   <div className="flex items-center justify-center space-x-2">
-                    <Badge className={`bg-gradient-to-r ${category.color} text-white px-3 py-1`}>
+                    <Badge className={`bg-gradient-to-r ${category.color} text-white px-2 py-0.5 text-xs`}>
                       {demoInfluencers[category.name]?.length || 0} creators
                     </Badge>
                   </div>
