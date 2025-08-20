@@ -1140,10 +1140,13 @@ const LandingPage = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
+      console.log('All influencers fetched:', response.data); // Debug log
+      
       const categoryData = {};
       
       // Organize all influencers by their categories
       response.data.forEach(influencer => {
+        console.log(`Processing influencer: ${influencer.name}, categories:`, influencer.categories); // Debug log
         if (influencer.categories && Array.isArray(influencer.categories)) {
           influencer.categories.forEach(category => {
             if (!categoryData[category]) {
@@ -1153,6 +1156,8 @@ const LandingPage = () => {
           });
         }
       });
+      
+      console.log('Organized category data:', categoryData); // Debug log
       
       // Limit each category to 9 influencers and merge with demo data if needed
       categories.forEach(category => {
@@ -1164,6 +1169,7 @@ const LandingPage = () => {
         categoryData[category.name] = combined;
       });
       
+      console.log('Final category data:', categoryData); // Debug log
       setCategoryInfluencers(categoryData);
     } catch (error) {
       console.error('Error fetching category influencers:', error);
