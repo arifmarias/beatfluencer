@@ -1595,8 +1595,11 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
     featured_creators: false,
     
     // Social Media
+    active_platforms: [],
     social_media_accounts: []
   });
+
+  const [urlErrors, setUrlErrors] = useState({});
 
   const divisions = [
     'Dhaka', 'Chittagong', 'Rajshahi', 'Khulna', 'Barishal', 'Sylhet', 'Rangpur', 'Mymensingh'
