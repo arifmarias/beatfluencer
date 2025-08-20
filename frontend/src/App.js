@@ -1929,6 +1929,13 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      // Check if user is still authenticated
+      if (!token) {
+        alert('Session expired. Please log in again.');
+        setLoading(false);
+        return;
+      }
+
       // Validate required fields
       if (!formData.name.trim()) {
         alert('Name is required');
@@ -2019,20 +2026,29 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
 
       console.log('Submitting data:', submitData); // For debugging
 
-      await axios.post(`${API}/influencers`, submitData, {
+      const response = await axios.post(`${API}/influencers`, submitData, {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       });
       
+      console.log('Success response:', response.data);
       onSuccess();
     } catch (error) {
       console.error('Error creating influencer:', error);
-      if (error.response?.data?.detail) {
+      
+      if (error.response?.status === 401) {
+        alert('Your session has expired. Please log in again.');
+        // Optionally redirect to login
+        window.location.reload();
+      } else if (error.response?.status === 403) {
+        alert('You do not have permission to create influencers. Please contact an administrator.');
+      } else if (error.response?.data?.detail) {
         alert(`Error: ${error.response.data.detail}`);
       } else if (error.response?.status === 422) {
         alert('Validation error: Please check all required fields are filled correctly.');
+        console.log('Validation error details:', error.response.data);
       } else {
         alert('Error creating influencer. Please try again.');
       }
