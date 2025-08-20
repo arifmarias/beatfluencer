@@ -716,16 +716,16 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         {/* Profile Info - Clean Layout */}
         <div className="text-center">
           <h3 className="font-bold text-base text-gray-900 mb-1 truncate">{displayName}</h3>
-          <div className="text-xs text-gray-600 mb-2">
+          <div className="text-xs text-gray-600 mb-1">
             <span className="capitalize">{influencer.account_type}</span> • <span>{influencer.division}</span>
           </div>
         </div>
         
         {/* Total Followers - Compact Display */}
-        <div className="text-center bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-2">
-          <div className="flex items-center justify-center space-x-1 mb-1">
-            <Users className="w-4 h-4 text-indigo-600" />
-            <span className="text-lg font-bold text-gray-900">
+        <div className="text-center bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-1.5">
+          <div className="flex items-center justify-center space-x-1 mb-0.5">
+            <Users className="w-3 h-3 text-indigo-600" />
+            <span className="text-sm font-bold text-gray-900">
               {totalFollowers > 1000000 
                 ? `${(totalFollowers / 1000000).toFixed(1)}M` 
                 : totalFollowers > 1000 
@@ -741,7 +741,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         {filteredCategories.length > 0 && (
           <div className="flex flex-wrap gap-1 justify-center">
             {filteredCategories.slice(0, 2).map((category, index) => (
-              <Badge key={index} variant="outline" className="text-xs border-purple-200 text-purple-700 bg-purple-50">
+              <Badge key={index} variant="outline" className="text-xs border-purple-200 text-purple-700 bg-purple-50 py-0">
                 {category}
               </Badge>
             ))}
