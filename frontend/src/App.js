@@ -460,103 +460,129 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
 
 // Enhanced Influencer Card Component
 const InfluencerCard = ({ influencer, showRemuneration = false }) => {
-  const { user } = useAuth();
-  const totalFollowers = influencer.social_media_accounts?.reduce((sum, account) => sum + account.follower_count, 0) || 0;
-  const platforms = influencer.social_media_accounts || [];
-  const canSeeRemuneration = user?.role !== 'campaign_manager';
-  const minRate = influencer.remuneration_services?.length > 0 
-    ? Math.min(...influencer.remuneration_services.map(service => service.rate)) 
-    : null;
+  const [showSocialMedia, setShowSocialMedia] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   
+  // Calculate total followers
+  const totalFollowers = influencer.social_media_accounts?.reduce((sum, account) => 
+    sum + (account.follower_count || 0), 0
+  ) || 0;
+
+  // Format follower count
+  const formatFollowers = (count) => {
+    if (count >= 1000000) {
+      return `${(count / 1000000).toFixed(1)}M`;
+    } else if (count >= 1000) {
+      return `${(count / 1000).toFixed(0)}K`;
+    }
+    return count.toLocaleString();
+  };
+
+  // Get first name for display
+  const displayName = influencer.name?.split(' ')[0] || influencer.name;
+
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 bg-white border-0 shadow-md overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 to-purple-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      
-      <CardHeader className="relative pb-3">
-        <div className="flex items-center space-x-3">
-          <div className="w-14 h-14 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
-            {influencer.name?.charAt(0)?.toUpperCase()}
+    <>
+      <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] bg-white border-0 shadow-lg overflow-hidden w-full max-w-[320px] mx-auto">
+        {/* Profile Image */}
+        <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200">
+          <img 
+            src={influencer.profile_image || `https://ui-avatars.com/api/?name=${encodeURIComponent(influencer.name)}&size=400&background=6366f1&color=ffffff`} 
+            alt={influencer.name}
+            className="w-full h-full object-cover"
+          />
+          {/* Gradient overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        </div>
+        
+        <CardContent className="p-6 text-center space-y-4">
+          {/* Name and Location */}
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-1">{displayName}</h3>
+            <p className="text-gray-600 text-sm">{influencer.division}</p>
           </div>
-          <div className="flex-1">
-            <h3 className="font-bold text-lg text-gray-900 group-hover:text-indigo-600 transition-colors">
-              {influencer.name}
-            </h3>
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary" className="text-xs capitalize">
-                {influencer.account_type}
-              </Badge>
-              {influencer.featured_creators && (
-                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-xs">
-                  <Star className="w-3 h-3 mr-1" />
-                  Featured
+          
+          {/* Total Followers */}
+          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-3">
+            <div className="flex items-center justify-center space-x-2 mb-1">
+              <Users className="w-5 h-5 text-indigo-600" />
+              <span className="text-2xl font-bold text-gray-900">
+                {formatFollowers(totalFollowers)}
+              </span>
+            </div>
+            <span className="text-sm text-gray-600 font-medium">Total Followers</span>
+          </div>
+          
+          {/* Categories */}
+          {influencer.categories && influencer.categories.length > 0 && (
+            <div className="flex flex-wrap gap-2 justify-center">
+              {influencer.categories.slice(0, 2).map((category, index) => (
+                <Badge 
+                  key={index} 
+                  className="bg-purple-100 text-purple-700 border-purple-200 px-3 py-1 text-xs font-medium"
+                >
+                  {category}
                 </Badge>
+              ))}
+            </div>
+          )}
+          
+          {/* Social Media Section */}
+          {influencer.social_media_accounts && influencer.social_media_accounts.length > 0 && (
+            <div className="border-t border-gray-100 pt-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowSocialMedia(!showSocialMedia)}
+                className="w-full text-gray-600 hover:text-indigo-600 transition-colors p-2 h-auto"
+              >
+                <Globe className="w-4 h-4 mr-2" />
+                <span className="font-medium">Social Media</span>
+                <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-200 ${showSocialMedia ? 'rotate-180' : ''}`} />
+              </Button>
+              
+              {showSocialMedia && (
+                <div className="mt-3 space-y-2 animate-fade-in">
+                  {influencer.social_media_accounts.slice(0, 3).map((account, index) => (
+                    <div key={index} className="flex items-center justify-between bg-gray-50 rounded-lg p-2 text-sm">
+                      <div className="flex items-center space-x-2">
+                        {account.platform === 'instagram' && <Instagram className="w-4 h-4 text-pink-500" />}
+                        {account.platform === 'youtube' && <Youtube className="w-4 h-4 text-red-500" />}
+                        {account.platform === 'facebook' && <Facebook className="w-4 h-4 text-blue-500" />}
+                        {account.platform === 'tiktok' && <Video className="w-4 h-4 text-black" />}
+                        {account.platform === 'linkedin' && <Users className="w-4 h-4 text-blue-700" />}
+                        {account.platform === 'snapchat' && <Camera className="w-4 h-4 text-yellow-500" />}
+                        <span className="font-medium capitalize">{account.platform}</span>
+                      </div>
+                      <span className="font-semibold text-gray-900">
+                        {formatFollowers(account.follower_count)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
-          </div>
-        </div>
-      </CardHeader>
-      
-      <CardContent className="relative space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Users className="w-4 h-4 text-indigo-500" />
-            <span className="font-semibold text-gray-900">
-              {totalFollowers.toLocaleString()}
-            </span>
-            <span className="text-gray-600 text-sm">followers</span>
-          </div>
-          <div className="flex items-center space-x-1 text-sm">
-            <MapPin className="w-4 h-4 text-gray-400" />
-            <span className="text-gray-600">{influencer.division}</span>
-          </div>
-        </div>
-        
-        {/* Platform Icons with Followers */}
-        <div className="flex flex-wrap gap-2">
-          {platforms.map((account, index) => (
-            <div key={index} className="relative group/platform">
-              <div className="flex items-center space-x-1 bg-gray-100 rounded-full px-2 py-1 hover:bg-indigo-100 transition-colors">
-                {account.platform === 'instagram' && <Instagram className="w-4 h-4 text-pink-500" />}
-                {account.platform === 'youtube' && <Youtube className="w-4 h-4 text-red-500" />}
-                {account.platform === 'facebook' && <Facebook className="w-4 h-4 text-blue-500" />}
-                {account.platform === 'tiktok' && <Video className="w-4 h-4 text-black" />}
-                <span className="text-xs font-medium text-gray-700">
-                  {account.follower_count > 1000 
-                    ? `${(account.follower_count / 1000).toFixed(0)}K` 
-                    : account.follower_count}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        <div className="flex flex-wrap gap-1">
-          {influencer.categories?.slice(0, 3).map((category, index) => (
-            <Badge key={index} variant="outline" className="text-xs border-indigo-200 text-indigo-700">
-              {category}
-            </Badge>
-          ))}
-          {influencer.categories?.length > 3 && (
-            <Badge variant="outline" className="text-xs border-gray-200">
-              +{influencer.categories.length - 3}
-            </Badge>
           )}
-        </div>
-        
-        <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-          {canSeeRemuneration && minRate && (
-            <div className="text-sm">
-              <span className="text-gray-500">From</span>
-              <span className="font-bold text-green-600 ml-1">৳{minRate.toLocaleString()}</span>
-            </div>
-          )}
-          <Button size="sm" className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white">
-            <Eye className="w-3 h-3 mr-1" />
+          
+          {/* View Profile Button */}
+          <Button 
+            onClick={() => setShowProfile(true)}
+            className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-3 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+          >
+            <Eye className="w-4 h-4 mr-2" />
             View Profile
           </Button>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+
+      {/* Profile Modal */}
+      {showProfile && (
+        <InfluencerProfileModal 
+          influencer={influencer} 
+          onClose={() => setShowProfile(false)} 
+        />
+      )}
+    </>
   );
 };
 
