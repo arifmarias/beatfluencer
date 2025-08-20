@@ -2444,7 +2444,54 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
 const InfluencersPage = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [influencers, setInfluencers] = useState([]);
+  const [filteredInfluencers, setFilteredInfluencers] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
   const { token } = useAuth();
+
+  // Search and Filter States
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
+    platforms: [],
+    gender: '',
+    experienceRange: '',
+    categories: [],
+    location: '',
+    verificationStatus: '',
+    featuredStatus: '',
+    followerCountMin: '',
+    followerCountMax: '',
+    remunerationMin: '',
+    remunerationMax: ''
+  });
+
+  const filterOptions = {
+    platforms: [
+      { id: 'facebook', name: 'Facebook', icon: Facebook, color: 'text-blue-600' },
+      { id: 'instagram', name: 'Instagram', icon: Instagram, color: 'text-pink-500' },
+      { id: 'youtube', name: 'YouTube', icon: Youtube, color: 'text-red-500' },
+      { id: 'tiktok', name: 'TikTok', icon: Video, color: 'text-black' },
+      { id: 'linkedin', name: 'LinkedIn', icon: Users, color: 'text-blue-700' },
+      { id: 'snapchat', name: 'Snapchat', icon: Camera, color: 'text-yellow-500' }
+    ],
+    experienceRanges: [
+      { value: '0-1', label: '0-1 years' },
+      { value: '1-3', label: '1-3 years' },
+      { value: '3-5', label: '3-5 years' },
+      { value: '5+', label: '5+ years' }
+    ],
+    categories: [
+      'Fashion & Style', 'Beauty & Cosmetics', 'Fitness & Health', 'Food & Cooking', 
+      'Travel', 'Lifestyle', 'Technology', 'Gaming', 'Parenting & Family', 
+      'Business & Finance', 'Education', 'Entertainment', 'Home & Garden', 
+      'Pets & Animals', 'Sports', 'Art & Creativity', 'Automotive', 
+      'Religious/Spiritual Content', 'Social Causes & NGO', 'Local Culture & Traditions', 
+      'Language Learning', 'DIY & Crafts', 'Photography', 'Music & Dance', 
+      'Comedy & Humor', 'Others'
+    ],
+    divisions: [
+      'Dhaka', 'Chittagong', 'Rajshahi', 'Khulna', 'Barishal', 'Sylhet', 'Rangpur', 'Mymensingh'
+    ]
+  };
 
   const fetchInfluencers = async () => {
     try {
@@ -2452,21 +2499,179 @@ const InfluencersPage = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setInfluencers(response.data);
+      setFilteredInfluencers(response.data);
     } catch (error) {
       console.error('Error fetching influencers:', error);
     }
+  };
+
+  // Apply search and filters
+  const applyFilters = () => {
+    let filtered = [...influencers];
+
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(influencer => 
+        influencer.name.toLowerCase().includes(query) ||
+        influencer.social_media_accounts?.some(account => 
+          account.channel_name?.toLowerCase().includes(query)
+        ) ||
+        influencer.affiliated_brands?.some(brand => 
+          brand.toLowerCase().includes(query)
+        )
+      );
+    }
+
+    // Platform filter
+    if (filters.platforms.length > 0) {
+      filtered = filtered.filter(influencer =>
+        influencer.social_media_accounts?.some(account =>
+          filters.platforms.includes(account.platform)
+        )
+      );
+    }
+
+    // Gender filter
+    if (filters.gender) {
+      filtered = filtered.filter(influencer => influencer.gender === filters.gender);
+    }
+
+    // Experience filter
+    if (filters.experienceRange) {
+      filtered = filtered.filter(influencer => influencer.experience_years === filters.experienceRange);
+    }
+
+    // Categories filter
+    if (filters.categories.length > 0) {
+      filtered = filtered.filter(influencer =>
+        influencer.categories?.some(category =>
+          filters.categories.includes(category)
+        )
+      );
+    }
+
+    // Location filter
+    if (filters.location) {
+      filtered = filtered.filter(influencer => influencer.division === filters.location);
+    }
+
+    // Verification status filter
+    if (filters.verificationStatus) {
+      const isVerified = filters.verificationStatus === 'verified';
+      filtered = filtered.filter(influencer =>
+        influencer.social_media_accounts?.some(account => account.verification_status === isVerified)
+      );
+    }
+
+    // Featured status filter
+    if (filters.featuredStatus) {
+      const isFeatured = filters.featuredStatus === 'featured';
+      filtered = filtered.filter(influencer => 
+        influencer.featured_category === isFeatured || influencer.featured_creators === isFeatured
+      );
+    }
+
+    // Follower count range filter
+    if (filters.followerCountMin || filters.followerCountMax) {
+      filtered = filtered.filter(influencer => {
+        const totalFollowers = influencer.social_media_accounts?.reduce((sum, account) => 
+          sum + (account.follower_count || 0), 0
+        ) || 0;
+        
+        const min = parseInt(filters.followerCountMin) || 0;
+        const max = parseInt(filters.followerCountMax) || Infinity;
+        
+        return totalFollowers >= min && totalFollowers <= max;
+      });
+    }
+
+    // Remuneration range filter
+    if (filters.remunerationMin || filters.remunerationMax) {
+      filtered = filtered.filter(influencer => {
+        const avgRemuneration = influencer.remuneration_services?.reduce((sum, service) => 
+          sum + (service.rate || 0), 0
+        ) / (influencer.remuneration_services?.length || 1) || 0;
+        
+        const min = parseInt(filters.remunerationMin) || 0;
+        const max = parseInt(filters.remunerationMax) || Infinity;
+        
+        return avgRemuneration >= min && avgRemuneration <= max;
+      });
+    }
+
+    setFilteredInfluencers(filtered);
+  };
+
+  // Handle filter changes
+  const handleFilterChange = (filterType, value, isMultiSelect = false) => {
+    setFilters(prev => {
+      if (isMultiSelect) {
+        const currentValues = prev[filterType] || [];
+        const newValues = currentValues.includes(value)
+          ? currentValues.filter(v => v !== value)
+          : [...currentValues, value];
+        return { ...prev, [filterType]: newValues };
+      } else {
+        return { ...prev, [filterType]: value };
+      }
+    });
+  };
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setFilters({
+      platforms: [],
+      gender: '',
+      experienceRange: '',
+      categories: [],
+      location: '',
+      verificationStatus: '',
+      featuredStatus: '',
+      followerCountMin: '',
+      followerCountMax: '',
+      remunerationMin: '',
+      remunerationMax: ''
+    });
+    setSearchQuery('');
+  };
+
+  // Get active filter count
+  const getActiveFilterCount = () => {
+    let count = 0;
+    if (searchQuery.trim()) count++;
+    if (filters.platforms.length > 0) count++;
+    if (filters.gender) count++;
+    if (filters.experienceRange) count++;
+    if (filters.categories.length > 0) count++;
+    if (filters.location) count++;
+    if (filters.verificationStatus) count++;
+    if (filters.featuredStatus) count++;
+    if (filters.followerCountMin || filters.followerCountMax) count++;
+    if (filters.remunerationMin || filters.remunerationMax) count++;
+    return count;
   };
 
   useEffect(() => {
     fetchInfluencers();
   }, []);
 
+  useEffect(() => {
+    applyFilters();
+  }, [searchQuery, filters, influencers]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Influencers Management</h1>
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Influencers Management</h1>
+            <p className="text-gray-600 mt-1">
+              {filteredInfluencers.length} of {influencers.length} influencers
+            </p>
+          </div>
           <Button 
             onClick={() => setShowAddForm(true)}
             className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white"
@@ -2476,6 +2681,264 @@ const InfluencersPage = () => {
           </Button>
         </div>
 
+        {/* Search and Filters */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+          {/* Search Bar */}
+          <div className="p-6 border-b border-gray-200">
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Input
+                  placeholder="Search by name, channel, or brand..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 h-12 text-base"
+                />
+              </div>
+              <div className="flex space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`h-12 ${showFilters ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : ''}`}
+                >
+                  <Filter className="w-4 h-4 mr-2" />
+                  Filters
+                  {getActiveFilterCount() > 0 && (
+                    <Badge className="ml-2 bg-indigo-500 text-white">
+                      {getActiveFilterCount()}
+                    </Badge>
+                  )}
+                </Button>
+                {getActiveFilterCount() > 0 && (
+                  <Button
+                    variant="outline"
+                    onClick={clearAllFilters}
+                    className="h-12 text-red-600 border-red-200 hover:bg-red-50"
+                  >
+                    <X className="w-4 h-4 mr-2" />
+                    Clear All
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Filters Panel */}
+          {showFilters && (
+            <div className="p-6 bg-gray-50 border-b border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                
+                {/* Platforms Filter */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Platforms</Label>
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {filterOptions.platforms.map(platform => (
+                      <label key={platform.id} className="flex items-center space-x-2 text-sm">
+                        <Checkbox
+                          checked={filters.platforms.includes(platform.id)}
+                          onCheckedChange={(checked) => handleFilterChange('platforms', platform.id, true)}
+                        />
+                        <platform.icon className={`w-4 h-4 ${platform.color}`} />
+                        <span>{platform.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Gender Filter */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Gender</Label>
+                  <Select value={filters.gender} onValueChange={(value) => handleFilterChange('gender', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Genders</SelectItem>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
+                      <SelectItem value="others">Others</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Experience Range Filter */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Experience</Label>
+                  <Select value={filters.experienceRange} onValueChange={(value) => handleFilterChange('experienceRange', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select experience" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Experience</SelectItem>
+                      {filterOptions.experienceRanges.map(range => (
+                        <SelectItem key={range.value} value={range.value}>
+                          {range.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Location Filter */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Location</Label>
+                  <Select value={filters.location} onValueChange={(value) => handleFilterChange('location', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select location" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Locations</SelectItem>
+                      {filterOptions.divisions.map(division => (
+                        <SelectItem key={division} value={division}>
+                          {division}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Categories Filter */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Categories</Label>
+                  <div className="border rounded-md p-2 max-h-40 overflow-y-auto bg-white">
+                    {filterOptions.categories.map(category => (
+                      <label key={category} className="flex items-center space-x-2 text-sm py-1">
+                        <Checkbox
+                          checked={filters.categories.includes(category)}
+                          onCheckedChange={(checked) => handleFilterChange('categories', category, true)}
+                        />
+                        <span className="text-xs">{category}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Verification Status Filter */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Verification</Label>
+                  <Select value={filters.verificationStatus} onValueChange={(value) => handleFilterChange('verificationStatus', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select verification" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Status</SelectItem>
+                      <SelectItem value="verified">Verified</SelectItem>
+                      <SelectItem value="unverified">Unverified</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Featured Status Filter */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Featured Status</Label>
+                  <Select value={filters.featuredStatus} onValueChange={(value) => handleFilterChange('featuredStatus', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select featured" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Status</SelectItem>
+                      <SelectItem value="featured">Featured</SelectItem>
+                      <SelectItem value="non-featured">Non-Featured</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Follower Count Range */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Follower Count</Label>
+                  <div className="flex space-x-2">
+                    <Input
+                      placeholder="Min"
+                      type="number"
+                      value={filters.followerCountMin}
+                      onChange={(e) => handleFilterChange('followerCountMin', e.target.value)}
+                      className="text-xs"
+                    />
+                    <Input
+                      placeholder="Max"
+                      type="number"
+                      value={filters.followerCountMax}
+                      onChange={(e) => handleFilterChange('followerCountMax', e.target.value)}
+                      className="text-xs"
+                    />
+                  </div>
+                </div>
+
+                {/* Remuneration Range */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">Remuneration (BDT)</Label>
+                  <div className="flex space-x-2">
+                    <Input
+                      placeholder="Min"
+                      type="number"
+                      value={filters.remunerationMin}
+                      onChange={(e) => handleFilterChange('remunerationMin', e.target.value)}
+                      className="text-xs"
+                    />
+                    <Input
+                      placeholder="Max"
+                      type="number"
+                      value={filters.remunerationMax}
+                      onChange={(e) => handleFilterChange('remunerationMax', e.target.value)}
+                      className="text-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Active Filters Display */}
+          {getActiveFilterCount() > 0 && (
+            <div className="p-4 bg-blue-50 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div className="flex flex-wrap gap-2">
+                  {searchQuery && (
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                      Search: "{searchQuery}"
+                      <X 
+                        className="w-3 h-3 ml-1 cursor-pointer" 
+                        onClick={() => setSearchQuery('')}
+                      />
+                    </Badge>
+                  )}
+                  {filters.platforms.map(platform => (
+                    <Badge key={platform} variant="secondary" className="bg-blue-100 text-blue-800">
+                      {filterOptions.platforms.find(p => p.id === platform)?.name}
+                      <X 
+                        className="w-3 h-3 ml-1 cursor-pointer" 
+                        onClick={() => handleFilterChange('platforms', platform, true)}
+                      />
+                    </Badge>
+                  ))}
+                  {filters.gender && (
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 capitalize">
+                      {filters.gender}
+                      <X 
+                        className="w-3 h-3 ml-1 cursor-pointer" 
+                        onClick={() => handleFilterChange('gender', '')}
+                      />
+                    </Badge>
+                  )}
+                  {filters.categories.map(category => (
+                    <Badge key={category} variant="secondary" className="bg-blue-100 text-blue-800">
+                      {category}
+                      <X 
+                        className="w-3 h-3 ml-1 cursor-pointer" 
+                        onClick={() => handleFilterChange('categories', category, true)}
+                      />
+                    </Badge>
+                  ))}
+                </div>
+                <span className="text-sm text-blue-600 font-medium">
+                  {filteredInfluencers.length} result{filteredInfluencers.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Add Influencer Form */}
         {showAddForm && (
           <AddInfluencerForm 
             onClose={() => setShowAddForm(false)}
@@ -2486,20 +2949,35 @@ const InfluencersPage = () => {
           />
         )}
 
-        {influencers.length === 0 ? (
+        {/* Results */}
+        {filteredInfluencers.length === 0 ? (
           <div className="text-center py-16">
             <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 mb-4">No influencers added yet</p>
-            <Button 
-              onClick={() => setShowAddForm(true)}
-              variant="outline"
-            >
-              Add Your First Influencer
-            </Button>
+            {influencers.length === 0 ? (
+              <>
+                <p className="text-gray-600 mb-4">No influencers added yet</p>
+                <Button 
+                  onClick={() => setShowAddForm(true)}
+                  variant="outline"
+                >
+                  Add Your First Influencer
+                </Button>
+              </>
+            ) : (
+              <>
+                <p className="text-gray-600 mb-4">No influencers match your current filters</p>
+                <Button 
+                  onClick={clearAllFilters}
+                  variant="outline"
+                >
+                  Clear All Filters
+                </Button>
+              </>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {influencers.map((influencer) => (
+            {filteredInfluencers.map((influencer) => (
               <InfluencerCard key={influencer.id} influencer={influencer} />
             ))}
           </div>
