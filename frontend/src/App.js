@@ -1567,6 +1567,7 @@ const LandingPage = () => {
             isOpen={showCategoryModal}
             onClose={closeCategoryModal}
             navigate={navigate}
+            categoryInfluencers={categoryInfluencers}
           />
         </div>
       </section>
