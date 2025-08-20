@@ -376,157 +376,164 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
   const age = calculateAge(influencer.date_of_birth);
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-hidden">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-6xl max-h-[95vh] overflow-hidden border border-gray-100">
         
-        {/* Enhanced Header */}
-        <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-8 text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/10"></div>
+        {/* Refined Header */}
+        <div className="bg-gradient-to-r from-slate-50 via-gray-50 to-slate-100 p-8 border-b border-gray-200 relative">
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={onClose} 
-            className="absolute top-4 right-4 text-white hover:bg-white/20 z-10"
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 hover:bg-gray-100 z-10"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </Button>
           
-          <div className="relative z-10">
-            <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white/30 shadow-xl">
-                <img 
-                  src={influencer.profile_image || `https://ui-avatars.com/api/?name=${encodeURIComponent(influencer.name)}&size=300&background=ffffff&color=6366f1`}
-                  alt={influencer.name}
-                  className="w-full h-full object-cover"
-                />
+          <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
+            <div className="w-28 h-28 rounded-2xl overflow-hidden border-2 border-white shadow-lg">
+              <img 
+                src={influencer.profile_image || `https://ui-avatars.com/api/?name=${encodeURIComponent(influencer.name)}&size=300&background=f1f5f9&color=475569`}
+                alt={influencer.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
+            <div className="flex-1">
+              <div className="flex items-center space-x-3 mb-3">
+                <h2 className="text-3xl font-bold text-gray-900">{influencer.name}</h2>
+                {(influencer.featured_category || influencer.featured_creators) && (
+                  <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
+                    <Crown className="w-4 h-4 text-amber-600" />
+                  </div>
+                )}
               </div>
               
-              <div className="flex-1">
-                <div className="flex items-center space-x-3 mb-2">
-                  <h2 className="text-4xl font-bold">{influencer.name}</h2>
-                  {(influencer.featured_category || influencer.featured_creators) && (
-                    <Crown className="w-8 h-8 text-yellow-300" />
-                  )}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-gray-600 text-sm mb-6">
+                <div className="flex items-center space-x-2">
+                  <MapPin className="w-4 h-4 text-gray-400" />
+                  <span>{influencer.division}</span>
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-white/90 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="w-4 h-4" />
-                    <span>{influencer.division}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Users className="w-4 h-4" />
-                    <span className="capitalize">{influencer.gender}</span>
-                    {age && <span>• {age}y</span>}
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Star className="w-4 h-4" />
-                    <span>{influencer.experience_years} experience</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Building className="w-4 h-4" />
-                    <span className="capitalize">{influencer.account_type}</span>
-                  </div>
+                <div className="flex items-center space-x-2">
+                  <Users className="w-4 h-4 text-gray-400" />
+                  <span className="capitalize">{influencer.gender}</span>
+                  {age && <span className="text-gray-400">• {age}y</span>}
                 </div>
-                
-                <div className="mt-6 bg-white/20 rounded-lg p-4">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold">{formatFollowers(totalFollowers)}</div>
-                    <div className="text-sm opacity-90">Total Followers</div>
-                  </div>
+                <div className="flex items-center space-x-2">
+                  <Star className="w-4 h-4 text-gray-400" />
+                  <span>{influencer.experience_years}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Building className="w-4 h-4 text-gray-400" />
+                  <span className="capitalize">{influencer.account_type}</span>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm inline-block">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">{formatFollowers(totalFollowers)}</div>
+                  <div className="text-sm text-gray-500">Total Followers</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Enhanced Content */}
-        <div className="p-8 max-h-[calc(95vh-300px)] overflow-y-auto">
+        {/* Refined Content */}
+        <div className="p-8 max-h-[calc(95vh-280px)] overflow-y-auto">
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
             
-            {/* Left Column - Personal & Experience */}
+            {/* Left Column */}
             <div className="space-y-6">
               
               {/* Bio Section */}
               {influencer.bio && (
-                <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <MessageCircle className="w-5 h-5 mr-3 text-blue-600" />
+                <div className="bg-slate-50 rounded-xl p-6 border border-gray-100">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                      <MessageCircle className="w-4 h-4 text-blue-600" />
+                    </div>
                     About Me
                   </h3>
                   <p className="text-gray-700 leading-relaxed">{influencer.bio}</p>
-                </Card>
+                </div>
               )}
 
-              {/* Experience & Stats */}
-              <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-green-50 to-emerald-50">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                  <Award className="w-5 h-5 mr-3 text-green-600" />
+              {/* Experience */}
+              <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center mr-3">
+                    <Award className="w-4 h-4 text-emerald-600" />
+                  </div>
                   Professional Experience
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-white rounded-lg shadow-sm">
-                    <div className="text-2xl font-bold text-green-600">{influencer.experience_years}</div>
-                    <div className="text-sm text-gray-600">Experience</div>
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="text-xl font-bold text-gray-900">{influencer.experience_years}</div>
+                    <div className="text-sm text-gray-600 mt-1">Experience</div>
                   </div>
-                  <div className="text-center p-4 bg-white rounded-lg shadow-sm">
-                    <div className="text-2xl font-bold text-green-600">{influencer.total_campaigns || 0}</div>
-                    <div className="text-sm text-gray-600">Campaigns</div>
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="text-xl font-bold text-gray-900">{influencer.total_campaigns || 0}</div>
+                    <div className="text-sm text-gray-600 mt-1">Campaigns</div>
                   </div>
                 </div>
-              </Card>
+              </div>
 
               {/* Featured Status */}
               {(influencer.featured_category || influencer.featured_creators) && (
-                <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-yellow-50 to-orange-50">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <Crown className="w-5 h-5 mr-3 text-yellow-600" />
+                <div className="bg-amber-50 rounded-xl p-6 border border-amber-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center mr-3">
+                      <Crown className="w-4 h-4 text-amber-600" />
+                    </div>
                     Featured Status
                   </h3>
                   <div className="flex flex-wrap gap-3">
                     {influencer.featured_category && (
-                      <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-4 py-2 text-sm font-medium">
-                        <Star className="w-4 h-4 mr-2" />
+                      <div className="bg-white border border-amber-200 text-amber-800 px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                        <Star className="w-3 h-3 mr-2" />
                         Category Featured
-                      </Badge>
+                      </div>
                     )}
                     {influencer.featured_creators && (
-                      <Badge className="bg-gradient-to-r from-orange-400 to-red-400 text-white px-4 py-2 text-sm font-medium">
-                        <Crown className="w-4 h-4 mr-2" />
+                      <div className="bg-white border border-amber-200 text-amber-800 px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                        <Crown className="w-3 h-3 mr-2" />
                         Creator Featured
-                      </Badge>
+                      </div>
                     )}
                   </div>
-                </Card>
+                </div>
               )}
 
               {/* Contact Information */}
-              <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-purple-50 to-pink-50">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                  <MessageCircle className="w-5 h-5 mr-3 text-purple-600" />
+              <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                    <MessageCircle className="w-4 h-4 text-purple-600" />
+                  </div>
                   Contact Information
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3 p-3 bg-white rounded-lg shadow-sm">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                      <MessageCircle className="w-5 h-5 text-blue-600" />
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <MessageCircle className="w-4 h-4 text-blue-600" />
                     </div>
-                    <div>
-                      <div className="text-sm text-gray-600">Email</div>
-                      <a href={`mailto:${influencer.email}`} className="text-blue-600 hover:underline font-medium">
+                    <div className="flex-1">
+                      <div className="text-xs text-gray-500 mb-1">Email</div>
+                      <a href={`mailto:${influencer.email}`} className="text-blue-600 hover:text-blue-800 font-medium text-sm">
                         {influencer.email}
                       </a>
                     </div>
                   </div>
                   
                   {influencer.phone && (
-                    <div className="flex items-center space-x-3 p-3 bg-white rounded-lg shadow-sm">
-                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                        <MessageCircle className="w-5 h-5 text-green-600" />
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                        <MessageCircle className="w-4 h-4 text-green-600" />
                       </div>
-                      <div>
-                        <div className="text-sm text-gray-600">Phone</div>
-                        <a href={`tel:${influencer.phone}`} className="text-green-600 hover:underline font-medium">
+                      <div className="flex-1">
+                        <div className="text-xs text-gray-500 mb-1">Phone</div>
+                        <a href={`tel:${influencer.phone}`} className="text-green-600 hover:text-green-800 font-medium text-sm">
                           {influencer.phone}
                         </a>
                       </div>
@@ -534,142 +541,152 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
                   )}
                   
                   {influencer.address && (
-                    <div className="flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm">
-                      <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mt-1">
-                        <MapPin className="w-5 h-5 text-red-600" />
+                    <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mt-0.5">
+                        <MapPin className="w-4 h-4 text-red-600" />
                       </div>
-                      <div>
-                        <div className="text-sm text-gray-600">Address</div>
-                        <div className="text-gray-800">{influencer.address}</div>
+                      <div className="flex-1">
+                        <div className="text-xs text-gray-500 mb-1">Address</div>
+                        <div className="text-gray-800 text-sm">{influencer.address}</div>
                       </div>
                     </div>
                   )}
                 </div>
-              </Card>
+              </div>
             </div>
 
-            {/* Middle Column - Categories & Brands */}
+            {/* Middle Column */}
             <div className="space-y-6">
               
               {/* Content Categories */}
               {influencer.categories && influencer.categories.length > 0 && (
-                <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-pink-50 to-purple-50">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <Layers className="w-5 h-5 mr-3 text-pink-600" />
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center mr-3">
+                      <Layers className="w-4 h-4 text-pink-600" />
+                    </div>
                     Content Categories
                   </h3>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2">
                     {influencer.categories.map((category, index) => (
-                      <Badge key={index} className="bg-gradient-to-r from-pink-400 to-purple-400 text-white px-4 py-2 text-sm font-medium">
+                      <div key={index} className="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium border border-gray-200">
                         {category}
-                      </Badge>
-                    ))}
-                  </div>
-                </Card>
-              )}
-
-              {/* Industries Worked */}
-              {influencer.industries_worked && influencer.industries_worked.length > 0 && (
-                <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-cyan-50 to-blue-50">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <Building className="w-5 h-5 mr-3 text-cyan-600" />
-                    Industries Worked
-                  </h3>
-                  <div className="grid grid-cols-1 gap-2">
-                    {influencer.industries_worked.map((industry, index) => (
-                      <div key={index} className="flex items-center space-x-3 p-3 bg-white rounded-lg shadow-sm">
-                        <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
-                        <span className="text-gray-700 font-medium">{industry}</span>
                       </div>
                     ))}
                   </div>
-                </Card>
+                </div>
+              )}
+
+              {/* Industries */}
+              {influencer.industries_worked && influencer.industries_worked.length > 0 && (
+                <div className="bg-slate-50 rounded-xl p-6 border border-gray-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <div className="w-8 h-8 bg-cyan-100 rounded-lg flex items-center justify-center mr-3">
+                      <Building className="w-4 h-4 text-cyan-600" />
+                    </div>
+                    Industries Worked
+                  </h3>
+                  <div className="space-y-2">
+                    {influencer.industries_worked.map((industry, index) => (
+                      <div key={index} className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200">
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                        <span className="text-gray-700 text-sm font-medium">{industry}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
 
               {/* Affiliated Brands */}
               {influencer.affiliated_brands && influencer.affiliated_brands.length > 0 && (
-                <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-orange-50 to-red-50">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <Star className="w-5 h-5 mr-3 text-orange-600" />
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                      <Star className="w-4 h-4 text-orange-600" />
+                    </div>
                     Affiliated Brands
                   </h3>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2">
                     {influencer.affiliated_brands.map((brand, index) => (
-                      <Badge key={index} className="bg-gradient-to-r from-orange-400 to-red-400 text-white px-4 py-2 text-sm font-medium">
+                      <div key={index} className="bg-orange-50 border border-orange-200 text-orange-800 px-3 py-2 rounded-lg text-sm font-medium flex items-center">
                         <Building className="w-3 h-3 mr-2" />
                         {brand}
-                      </Badge>
+                      </div>
                     ))}
                   </div>
-                </Card>
+                </div>
               )}
 
               {/* Payment Information */}
               {(influencer.beneficiary_name || influencer.account_number || influencer.bank_name) && (
-                <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-gray-50 to-slate-50">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <DollarSign className="w-5 h-5 mr-3 text-gray-600" />
+                <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <div className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center mr-3">
+                      <DollarSign className="w-4 h-4 text-gray-600" />
+                    </div>
                     Payment Information
                   </h3>
                   <div className="space-y-3">
                     {influencer.beneficiary_name && (
-                      <div className="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm">
-                        <span className="text-gray-600">Beneficiary</span>
-                        <span className="font-medium text-gray-800">{influencer.beneficiary_name}</span>
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-200">
+                        <span className="text-gray-600 text-sm">Beneficiary</span>
+                        <span className="font-medium text-gray-900 text-sm">{influencer.beneficiary_name}</span>
                       </div>
                     )}
                     {influencer.account_number && (
-                      <div className="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm">
-                        <span className="text-gray-600">Account</span>
-                        <span className="font-medium text-gray-800">{influencer.account_number}</span>
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-200">
+                        <span className="text-gray-600 text-sm">Account</span>
+                        <span className="font-medium text-gray-900 text-sm">{influencer.account_number}</span>
                       </div>
                     )}
                     {influencer.bank_name && (
-                      <div className="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm">
-                        <span className="text-gray-600">Bank</span>
-                        <span className="font-medium text-gray-800">{influencer.bank_name}</span>
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-200">
+                        <span className="text-gray-600 text-sm">Bank</span>
+                        <span className="font-medium text-gray-900 text-sm">{influencer.bank_name}</span>
                       </div>
                     )}
                   </div>
-                </Card>
+                </div>
               )}
             </div>
 
-            {/* Right Column - Social Media & Remuneration */}
+            {/* Right Column */}
             <div className="space-y-6">
               
-              {/* Social Media Platforms */}
+              {/* Social Media */}
               {influencer.social_media_accounts && influencer.social_media_accounts.length > 0 && (
-                <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-indigo-50 to-blue-50">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <Globe className="w-5 h-5 mr-3 text-indigo-600" />
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                      <Globe className="w-4 h-4 text-indigo-600" />
+                    </div>
                     Social Media Platforms
                   </h3>
                   <div className="space-y-4">
                     {influencer.social_media_accounts.map((account, index) => (
-                      <div key={index} className="bg-white rounded-xl p-4 shadow-sm border">
+                      <div key={index} className="bg-gray-50 rounded-xl p-4 border border-gray-200">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center space-x-3">
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 flex items-center justify-center">
-                              {account.platform === 'instagram' && <Instagram className="w-6 h-6 text-white" />}
-                              {account.platform === 'youtube' && <Youtube className="w-6 h-6 text-white" />}
-                              {account.platform === 'facebook' && <Facebook className="w-6 h-6 text-white" />}
-                              {account.platform === 'tiktok' && <Video className="w-6 h-6 text-white" />}
-                              {account.platform === 'linkedin' && <Users className="w-6 h-6 text-white" />}
-                              {account.platform === 'snapchat' && <Camera className="w-6 h-6 text-white" />}
+                            <div className="w-10 h-10 bg-white rounded-lg border border-gray-200 flex items-center justify-center">
+                              {account.platform === 'instagram' && <Instagram className="w-5 h-5 text-pink-600" />}
+                              {account.platform === 'youtube' && <Youtube className="w-5 h-5 text-red-600" />}
+                              {account.platform === 'facebook' && <Facebook className="w-5 h-5 text-blue-600" />}
+                              {account.platform === 'tiktok' && <Video className="w-5 h-5 text-gray-900" />}
+                              {account.platform === 'linkedin' && <Users className="w-5 h-5 text-blue-700" />}
+                              {account.platform === 'snapchat' && <Camera className="w-5 h-5 text-yellow-500" />}
                             </div>
                             <div>
                               <div className="flex items-center space-x-2">
-                                <span className="font-bold capitalize text-lg">{account.platform}</span>
+                                <span className="font-semibold capitalize text-gray-900">{account.platform}</span>
                                 {account.verification_status && (
-                                  <Verified className="w-5 h-5 text-blue-500" />
+                                  <Verified className="w-4 h-4 text-blue-500" />
                                 )}
                               </div>
                               <div className="text-gray-600 text-sm">@{account.channel_name}</div>
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-2xl font-bold text-indigo-600">
+                            <div className="text-lg font-bold text-gray-900">
                               {formatFollowers(account.follower_count)}
                             </div>
                             <div className="text-xs text-gray-500">followers</div>
@@ -677,14 +694,14 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
                         </div>
                         
                         <div className="grid grid-cols-2 gap-3 text-sm">
-                          <div className="bg-gray-50 rounded-lg p-3">
-                            <div className="text-gray-600">Created</div>
-                            <div className="font-medium">{account.created_month}/{account.created_year}</div>
+                          <div className="bg-white rounded-lg p-2 border border-gray-200">
+                            <div className="text-gray-600 text-xs">Created</div>
+                            <div className="font-medium text-gray-900">{account.created_month}/{account.created_year}</div>
                           </div>
                           {account.cpv > 0 && (
-                            <div className="bg-gray-50 rounded-lg p-3">
-                              <div className="text-gray-600">CPV</div>
-                              <div className="font-medium">{formatCurrency(account.cpv)}</div>
+                            <div className="bg-white rounded-lg p-2 border border-gray-200">
+                              <div className="text-gray-600 text-xs">CPV</div>
+                              <div className="font-medium text-gray-900">{formatCurrency(account.cpv)}</div>
                             </div>
                           )}
                         </div>
@@ -697,7 +714,7 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
                               rel="noopener noreferrer"
                               className="inline-flex items-center text-indigo-600 hover:text-indigo-800 text-sm font-medium"
                             >
-                              <ExternalLink className="w-4 h-4 mr-1" />
+                              <ExternalLink className="w-3 h-3 mr-1" />
                               Visit Profile
                             </a>
                           </div>
@@ -705,36 +722,36 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
                       </div>
                     ))}
                   </div>
-                </Card>
+                </div>
               )}
 
-              {/* Service Rates & Remuneration */}
+              {/* Service Rates */}
               {influencer.remuneration_services && influencer.remuneration_services.length > 0 && (
-                <Card className="p-6 border-0 shadow-lg bg-gradient-to-br from-green-50 to-emerald-50">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <DollarSign className="w-5 h-5 mr-3 text-green-600" />
+                <div className="bg-green-50 rounded-xl p-6 border border-green-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                      <DollarSign className="w-4 h-4 text-green-600" />
+                    </div>
                     Service Rates
                   </h3>
                   <div className="space-y-3">
                     {influencer.remuneration_services.map((service, index) => (
-                      <div key={index} className="flex justify-between items-center p-4 bg-white rounded-xl shadow-sm border">
+                      <div key={index} className="flex justify-between items-center p-3 bg-white rounded-lg border border-green-200">
                         <div>
-                          <div className="font-semibold text-gray-800">{service.service_name}</div>
-                          <div className="text-sm text-gray-600">per service</div>
+                          <div className="font-medium text-gray-900 text-sm">{service.service_name}</div>
+                          <div className="text-xs text-gray-600">per service</div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-xl font-bold text-green-600">
-                            {formatCurrency(service.rate)}
-                          </div>
+                        <div className="text-lg font-bold text-green-600">
+                          {formatCurrency(service.rate)}
                         </div>
                       </div>
                     ))}
                   </div>
                   
-                  <div className="mt-4 p-4 bg-green-100 rounded-xl">
+                  <div className="mt-4 p-3 bg-white rounded-lg border border-green-200">
                     <div className="flex justify-between items-center">
-                      <span className="font-semibold text-green-800">Average Rate</span>
-                      <span className="text-xl font-bold text-green-800">
+                      <span className="font-semibold text-gray-900 text-sm">Average Rate</span>
+                      <span className="text-lg font-bold text-green-600">
                         {formatCurrency(
                           influencer.remuneration_services.reduce((sum, service) => sum + service.rate, 0) / 
                           influencer.remuneration_services.length
@@ -742,22 +759,22 @@ const InfluencerProfileModal = ({ influencer, onClose }) => {
                       </span>
                     </div>
                   </div>
-                </Card>
+                </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Enhanced Footer */}
-        <div className="border-t bg-gradient-to-r from-gray-50 to-gray-100 p-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-          <div className="text-gray-600 text-sm">
+        {/* Clean Footer */}
+        <div className="border-t border-gray-200 bg-gray-50 p-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+          <div className="text-gray-500 text-sm">
             Created on {new Date(influencer.created_at).toLocaleDateString('en-GB')}
           </div>
           <div className="flex space-x-3">
-            <Button variant="outline" onClick={onClose} className="px-6">
+            <Button variant="outline" onClick={onClose} className="px-6 border-gray-300 text-gray-700 hover:bg-gray-100">
               Close
             </Button>
-            <Button className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white px-6">
+            <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6">
               <MessageCircle className="w-4 h-4 mr-2" />
               Contact
             </Button>
