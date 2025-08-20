@@ -169,9 +169,44 @@ class Influencer(BaseModel):
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class InfluencerCreate(BaseModel):
+    # Personal Information
     account_type: AccountType
     name: str
     email: EmailStr
+    phone: str
+    address: str
+    division: str
+    gender: Gender
+    date_of_birth: datetime
+    bio: Optional[str] = None
+    profile_image: Optional[str] = None
+    
+    # Categories
+    categories: List[str] = []
+    
+    # Remuneration
+    remuneration_services: List[RemunerationService] = []
+    
+    # Experience
+    experience_years: str
+    total_campaigns: int = 0
+    affiliated_brands: List[str] = []
+    dedicated_brands: List[DedicatedBrand] = []
+    successful_campaigns: List[SuccessfulCampaign] = []
+    industries_worked: List[str] = []
+    
+    # Payment Information
+    beneficiary_name: Optional[str] = None
+    account_number: Optional[str] = None
+    tin_number: Optional[str] = None
+    bank_name: Optional[str] = None
+    
+    # Featured Options
+    featured_category: bool = False
+    featured_creators: bool = False
+    
+    # Social Media
+    social_media_accounts: List[SocialMediaAccount] = []
     phone: str
     address: str
     division: str
