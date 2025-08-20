@@ -2748,12 +2748,12 @@ const InfluencersPage = () => {
                 {/* Gender Filter */}
                 <div>
                   <Label className="text-sm font-medium text-gray-700 mb-2 block">Gender</Label>
-                  <Select value={filters.gender} onValueChange={(value) => handleFilterChange('gender', value)}>
+                  <Select value={filters.gender || "all"} onValueChange={(value) => handleFilterChange('gender', value === "all" ? "" : value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select gender" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Genders</SelectItem>
+                      <SelectItem value="all">All Genders</SelectItem>
                       <SelectItem value="male">Male</SelectItem>
                       <SelectItem value="female">Female</SelectItem>
                       <SelectItem value="others">Others</SelectItem>
@@ -2764,12 +2764,12 @@ const InfluencersPage = () => {
                 {/* Experience Range Filter */}
                 <div>
                   <Label className="text-sm font-medium text-gray-700 mb-2 block">Experience</Label>
-                  <Select value={filters.experienceRange} onValueChange={(value) => handleFilterChange('experienceRange', value)}>
+                  <Select value={filters.experienceRange || "all"} onValueChange={(value) => handleFilterChange('experienceRange', value === "all" ? "" : value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select experience" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Experience</SelectItem>
+                      <SelectItem value="all">All Experience</SelectItem>
                       {filterOptions.experienceRanges.map(range => (
                         <SelectItem key={range.value} value={range.value}>
                           {range.label}
@@ -2782,12 +2782,12 @@ const InfluencersPage = () => {
                 {/* Location Filter */}
                 <div>
                   <Label className="text-sm font-medium text-gray-700 mb-2 block">Location</Label>
-                  <Select value={filters.location} onValueChange={(value) => handleFilterChange('location', value)}>
+                  <Select value={filters.location || "all"} onValueChange={(value) => handleFilterChange('location', value === "all" ? "" : value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select location" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Locations</SelectItem>
+                      <SelectItem value="all">All Locations</SelectItem>
                       {filterOptions.divisions.map(division => (
                         <SelectItem key={division} value={division}>
                           {division}
