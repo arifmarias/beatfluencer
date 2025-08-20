@@ -928,8 +928,10 @@ const LandingPage = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [featuredInfluencers, setFeaturedInfluencers] = useState([]);
   const [categoryInfluencers, setCategoryInfluencers] = useState({});
-  const [expandedCategory, setExpandedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
   const { token, user } = useAuth();
+  const navigate = useNavigate();
 
   const categories = [
     { name: 'Lifestyle', icon: Sparkles, color: 'from-pink-500 to-rose-500', count: 0 },
