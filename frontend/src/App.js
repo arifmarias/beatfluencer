@@ -1352,81 +1352,37 @@ const LandingPage = () => {
             {categories.map((category) => (
               <Card 
                 key={category.name}
-                className={`cursor-pointer transition-all duration-500 transform hover:scale-105 hover:shadow-2xl border-0 overflow-hidden ${
-                  expandedCategory === category.name 
-                    ? 'ring-4 ring-indigo-300 shadow-2xl scale-105' 
-                    : 'shadow-lg hover:shadow-xl'
-                }`}
-                onClick={() => handleCategoryClick(category.name)}
+                className="cursor-pointer transition-all duration-500 transform hover:scale-105 hover:shadow-2xl border-0 shadow-lg overflow-hidden"
+                onClick={() => handleCategoryClick(category)}
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-10`}></div>
                 <CardContent className="relative p-8 text-center">
-                  <div className={`w-20 h-20 bg-gradient-to-br ${category.color} rounded-2xl flex items-center justify-center mx-auto mb-6 transform transition-transform duration-500 ${
-                    expandedCategory === category.name ? 'rotate-12 scale-110' : 'hover:rotate-6 hover:scale-105'
-                  } shadow-lg`}>
+                  <div className={`w-20 h-20 bg-gradient-to-br ${category.color} rounded-2xl flex items-center justify-center mx-auto mb-6 transform transition-transform duration-500 hover:rotate-6 hover:scale-105 shadow-lg`}>
                     <category.icon className="w-10 h-10 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{category.name}</h3>
                   <p className="text-gray-600 mb-4">Discover amazing creators</p>
                   <div className="flex items-center justify-center space-x-2">
                     <Badge className={`bg-gradient-to-r ${category.color} text-white px-3 py-1`}>
-                      {categoryInfluencers[category.name]?.length || 0} creators
+                      {demoInfluencers[category.name]?.length || 0} creators
                     </Badge>
                   </div>
                   <div className="flex items-center justify-center space-x-2 text-indigo-600 mt-4">
-                    <span className="text-sm font-medium">
-                      {expandedCategory === category.name ? 'Hide' : 'Explore'}
-                    </span>
-                    {expandedCategory === category.name ? 
-                      <ChevronUp className="w-4 h-4" /> : 
-                      <ChevronDown className="w-4 h-4" />
-                    }
+                    <span className="text-sm font-medium">Click to Explore</span>
+                    <Eye className="w-4 h-4" />
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          {/* Expanded Category Influencers */}
-          {expandedCategory && (
-            <div className="animate-fade-in">
-              <div className="mb-8 text-center">
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">
-                  {expandedCategory} <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Influencers</span>
-                </h3>
-                <p className="text-gray-600">Featured creators in this category</p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-                {/* 9 Influencer Cards */}
-                {(categoryInfluencers[expandedCategory] || []).slice(0, 9).map((influencer) => (
-                  <InfluencerCard key={influencer.id} influencer={influencer} />
-                ))}
-                
-                {/* 10th Card - Full List */}
-                <Card className="cursor-pointer hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-dashed border-indigo-300 flex items-center justify-center min-h-[400px]">
-                  <CardContent className="text-center p-8">
-                    <div className="w-20 h-20 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-pulse">
-                      <Eye className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">View All</h3>
-                    <p className="text-gray-600 mb-6">
-                      See complete list of all {expandedCategory} influencers in our database
-                    </p>
-                    <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300">
-                      <Layers className="w-4 h-4 mr-2" />
-                      Full List
-                    </Button>
-                    <div className="mt-4">
-                      <Badge className="bg-indigo-100 text-indigo-800 px-4 py-2">
-                        {categoryInfluencers[expandedCategory]?.length || 0}+ creators available
-                      </Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          )}
+          {/* Category Modal */}
+          <CategoryModal 
+            category={selectedCategory}
+            isOpen={showCategoryModal}
+            onClose={closeCategoryModal}
+            navigate={navigate}
+          />
         </div>
       </section>
 
