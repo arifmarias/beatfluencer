@@ -777,13 +777,16 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
           
           {showSocialMedia && (
             <div className="mt-2 space-y-1.5 animate-fade-in">
-              {influencer.social_media_accounts?.slice(0, 3).map((account, index) => (
+              {influencer.social_media_accounts?.map((account, index) => (
                 <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-2 text-xs">
                   <div className="flex items-center space-x-2">
                     {account.platform === 'instagram' && <Instagram className="w-4 h-4 text-pink-500" />}
                     {account.platform === 'youtube' && <Youtube className="w-4 h-4 text-red-500" />}
                     {account.platform === 'facebook' && <Facebook className="w-4 h-4 text-blue-500" />}
                     {account.platform === 'tiktok' && <Video className="w-4 h-4 text-black" />}
+                    {account.platform === 'twitter' && <MessageCircle className="w-4 h-4 text-blue-400" />}
+                    {account.platform === 'linkedin' && <Users className="w-4 h-4 text-blue-600" />}
+                    {!['instagram', 'youtube', 'facebook', 'tiktok', 'twitter', 'linkedin'].includes(account.platform) && <Globe className="w-4 h-4 text-gray-500" />}
                     <span className="font-medium capitalize text-xs">{account.platform}</span>
                   </div>
                   <span className="font-semibold text-gray-900 text-xs">
