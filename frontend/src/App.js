@@ -143,9 +143,9 @@ const Navigation = () => {
             <Link to="/landing" className="flex items-center space-x-3">
               <div className="h-10 w-10 flex items-center justify-center">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_brandnest/artifacts/lynsk6m2_image.png" 
+                  src="/beatfluencer_logo.png" 
                   alt="Beatfluencer Logo"
-                  className="h-full w-full object-contain drop-shadow-sm"
+                  className="h-full w-full object-contain drop-shadow-sm hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <div>
