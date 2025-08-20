@@ -1845,6 +1845,65 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
             <div className="space-y-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
               
+              {/* Profile Picture Upload */}
+              <div className="flex flex-col items-center space-y-4 mb-6">
+                <div className="relative">
+                  {formData.profile_image ? (
+                    <div className="relative">
+                      <img 
+                        src={formData.profile_image} 
+                        alt="Profile Preview" 
+                        className="w-32 h-32 rounded-full object-cover border-4 border-indigo-200"
+                      />
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="destructive"
+                        className="absolute -top-2 -right-2 rounded-full w-8 h-8 p-0"
+                        onClick={() => handleInputChange('profile_image', '')}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="w-32 h-32 rounded-full bg-gray-100 border-4 border-dashed border-gray-300 flex items-center justify-center">
+                      <Camera className="w-8 h-8 text-gray-400" />
+                    </div>
+                  )}
+                </div>
+                
+                <div className="text-center">
+                  <Label htmlFor="profile_image" className="cursor-pointer">
+                    <div className="inline-flex items-center space-x-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg border border-indigo-200 transition-colors">
+                      {uploadingImage ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
+                          <span className="text-sm">Uploading...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Camera className="w-4 h-4" />
+                          <span className="text-sm font-medium">
+                            {formData.profile_image ? 'Change Photo' : 'Upload Photo'}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </Label>
+                  <Input
+                    id="profile_image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    disabled={uploadingImage}
+                  />
+                  <p className="text-xs text-gray-500 mt-2">
+                    JPG, PNG, GIF up to 5MB. Recommended: 400x400px
+                  </p>
+                </div>
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="account_type">Account Type</Label>
