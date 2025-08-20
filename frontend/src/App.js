@@ -700,7 +700,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
   ) || [];
 
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden h-full w-full max-w-[280px] mx-auto">
+    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden w-full max-w-[280px] mx-auto" style={{ height: '420px' }}>
       <div className="relative">
         {/* Clean Profile Image - No Overlays */}
         <div className="aspect-square overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
@@ -712,7 +712,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         </div>
       </div>
       
-      <CardContent className="p-3 space-y-2 flex flex-col h-[180px]">
+      <CardContent className="p-3 space-y-2 flex flex-col" style={{ height: '180px' }}>
         {/* Profile Info - Clean Layout */}
         <div className="text-center">
           <h3 className="font-bold text-base text-gray-900 mb-1 truncate">{displayName}</h3>
@@ -754,16 +754,16 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
             variant="ghost"
             size="sm"
             onClick={() => setShowSocialMedia(!showSocialMedia)}
-            className="w-full text-gray-600 hover:text-indigo-600 transition-colors p-1 h-auto"
+            className="w-full text-gray-600 hover:text-indigo-600 transition-colors p-1 h-8 text-xs"
           >
-            <Globe className="w-3 h-3 mr-2" />
-            <span className="text-xs">Social Media</span>
-            <ChevronDown className={`w-3 h-3 ml-2 transition-transform duration-200 ${showSocialMedia ? 'rotate-180' : ''}`} />
+            <Globe className="w-3 h-3 mr-1" />
+            <span>Social Media</span>
+            <ChevronDown className={`w-3 h-3 ml-1 transition-transform duration-200 ${showSocialMedia ? 'rotate-180' : ''}`} />
           </Button>
           
           {showSocialMedia && (
-            <div className="mt-2 space-y-1 animate-fade-in flex-1 overflow-y-auto">
-              {influencer.social_media_accounts?.map((account, index) => (
+            <div className="mt-1 space-y-1 animate-fade-in flex-1 overflow-y-auto">
+              {influencer.social_media_accounts?.slice(0, 3).map((account, index) => (
                 <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-1 text-xs">
                   <div className="flex items-center space-x-1">
                     {account.platform === 'instagram' && <Instagram className="w-3 h-3 text-pink-500" />}
