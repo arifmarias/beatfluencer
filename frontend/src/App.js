@@ -749,12 +749,12 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         )}
         
         {/* Collapsible Social Media Section */}
-        <div className="border-t border-gray-100 pt-2 flex-1 flex flex-col">
+        <div className="border-t border-gray-100 pt-1 flex-1 flex flex-col min-h-0">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setShowSocialMedia(!showSocialMedia)}
-            className="w-full text-gray-600 hover:text-indigo-600 transition-colors p-1 h-8 text-xs"
+            className="w-full text-gray-600 hover:text-indigo-600 transition-colors p-1 h-6 text-xs"
           >
             <Globe className="w-3 h-3 mr-1" />
             <span>Social Media</span>
@@ -762,7 +762,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
           </Button>
           
           {showSocialMedia && (
-            <div className="mt-1 space-y-1 animate-fade-in flex-1 overflow-y-auto">
+            <div className="mt-1 space-y-0.5 animate-fade-in flex-1 overflow-y-auto max-h-16">
               {influencer.social_media_accounts?.slice(0, 3).map((account, index) => (
                 <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-1 text-xs">
                   <div className="flex items-center space-x-1">
@@ -770,9 +770,9 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
                     {account.platform === 'youtube' && <Youtube className="w-3 h-3 text-red-500" />}
                     {account.platform === 'facebook' && <Facebook className="w-3 h-3 text-blue-500" />}
                     {account.platform === 'tiktok' && <Video className="w-3 h-3 text-black" />}
-                    <span className="font-medium capitalize">{account.platform}</span>
+                    <span className="font-medium capitalize text-xs">{account.platform}</span>
                   </div>
-                  <span className="font-semibold text-gray-900">
+                  <span className="font-semibold text-gray-900 text-xs">
                     {account.follower_count > 1000000 
                       ? `${(account.follower_count / 1000000).toFixed(1)}M` 
                       : account.follower_count > 1000 
@@ -787,7 +787,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         </div>
         
         {/* Action Button */}
-        <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-1.5 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200 text-xs mt-auto">
+        <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-1 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200 text-xs mt-1">
           <Eye className="w-3 h-3 mr-1" />
           View Profile
         </Button>
