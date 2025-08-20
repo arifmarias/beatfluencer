@@ -170,8 +170,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix View All card size mismatch"
-    - "Verify Social Media Presence collapsible section functionality"
+    - "Fix InfluencerProfileModal bottom buttons visibility"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -189,3 +188,5 @@ agent_communication:
     message: "USER FEEDBACK: Social Media and View Profile buttons still not visible - need proper height calculation for card content."
   - agent: "main"
     message: "ULTIMATE FIX: Completely restructured card layout with precise height calculations - Image: 200px (non-square), Content: 220px, Total: 420px. All elements now fit perfectly: Profile info + Followers + Categories + Social Media + View Profile button. Testing confirms all 3 Social Media buttons and 3 View Profile buttons are visible and functional."
+  - agent: "main"
+    message: "NEW ISSUE: User reports bottom 2 buttons in InfluencerProfileModal are not visible. Implemented flexbox layout fix with proper height management - modal max-height 90vh, content flex-1 with overflow, footer flex-shrink-0. Need to test if fix resolves the issue."
