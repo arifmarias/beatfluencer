@@ -279,45 +279,47 @@ const Login = () => {
           </div>
         </div>
         
-        <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
+        <Card className="shadow-2xl border-0 bg-black/40 backdrop-blur-xl border border-purple-500/20">
           <CardContent className="p-8">
             <form className="space-y-6" onSubmit={handleSubmit}>
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
+                <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-lg text-sm">
                   {error}
                 </div>
               )}
               
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700 font-semibold">Email address</Label>
+              <div>
+                <Label htmlFor="email" className="text-purple-200">Email address</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="h-12 border-2 border-gray-200 focus:border-indigo-500"
+                  className="mt-1 bg-purple-900/30 border-purple-500/30 text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-purple-400"
                   placeholder="Enter your email"
                 />
               </div>
               
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-700 font-semibold">Password</Label>
+              <div>
+                <Label htmlFor="password" className="text-purple-200">Password</Label>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="h-12 border-2 border-gray-200 focus:border-indigo-500"
+                  className="mt-1 bg-purple-900/30 border-purple-500/30 text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-purple-400"
                   placeholder="Enter your password"
                 />
               </div>
               
-              <Button
-                type="submit"
-                className="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-lg font-semibold"
+              <Button 
+                type="submit" 
                 disabled={loading}
+                className="w-full bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-medium py-3 px-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
               >
                 {loading ? (
                   <div className="flex items-center">
@@ -331,7 +333,7 @@ const Login = () => {
         </Card>
         
         <div className="text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-purple-300">
             Need an account? Contact your administrator
           </p>
         </div>
