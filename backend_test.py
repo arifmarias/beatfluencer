@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import json
 
 class BeatfluencerAPITester:
-    def __init__(self, base_url="https://brandnest.preview.emergentagent.com"):
+    def __init__(self, base_url="https://beatfluencer-app.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tokens = {}
