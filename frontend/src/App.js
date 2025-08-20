@@ -1740,38 +1740,6 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
     }));
   };
 
-  const addSocialMedia = () => {
-    setFormData(prev => ({
-      ...prev,
-      social_media_accounts: [...prev.social_media_accounts, {
-        platform: 'facebook',
-        channel_name: '',
-        url: '',
-        follower_count: 0,
-        verification_status: false,
-        cpv: 0,
-        created_year: new Date().getFullYear(),
-        created_month: new Date().getMonth() + 1
-      }]
-    }));
-  };
-
-  const updateSocialMedia = (index, field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      social_media_accounts: prev.social_media_accounts.map((item, i) => 
-        i === index ? { ...item, [field]: value } : item
-      )
-    }));
-  };
-
-  const removeSocialMedia = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      social_media_accounts: prev.social_media_accounts.filter((_, i) => i !== index)
-    }));
-  };
-
   const handleSubmit = async () => {
     setLoading(true);
     try {
