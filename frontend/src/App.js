@@ -1274,8 +1274,8 @@ const LandingPage = () => {
       setCategoryInfluencers(categoryData);
     } catch (error) {
       console.error('Error fetching category influencers:', error);
-      // Fallback to demo data only
-      setCategoryInfluencers(demoInfluencers);
+      // Fallback to empty data when no data available
+      setCategoryInfluencers({});
     }
   };
 
