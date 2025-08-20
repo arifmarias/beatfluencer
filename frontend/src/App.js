@@ -717,7 +717,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         <div className="text-center mb-2">
           <h3 className="font-bold text-sm text-gray-900 mb-0.5 truncate">{displayName}</h3>
           <div className="text-xs text-gray-600">
-            <span className="capitalize">{influencer.account_type}</span> • <span>{influencer.division}</span>
+            <span>{influencer.division}</span>
           </div>
         </div>
         
