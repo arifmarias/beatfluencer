@@ -1679,7 +1679,42 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
     }));
   };
 
-  const checkUrlExists = async (url, platformId) => {
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size should be less than 5MB');
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await axios.post(`${API}/upload-image`, formData, {
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      handleInputChange('profile_image', response.data.url);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
     if (!url.trim()) {
       setUrlErrors(prev => ({ ...prev, [platformId]: '' }));
       return;
