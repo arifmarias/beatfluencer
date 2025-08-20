@@ -315,16 +315,6 @@ const Login = () => {
                 ) : 'Sign in to Platform'}
               </Button>
             </form>
-            
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
-                Demo Accounts:
-              </p>
-              <div className="mt-2 space-y-1 text-xs text-gray-500">
-                <div>Admin: admin_new@test.com / admin123</div>
-                <div>Manager: cm_new@test.com / cm123</div>
-              </div>
-            </div>
           </CardContent>
         </Card>
         
