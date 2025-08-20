@@ -32,6 +32,13 @@ SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'your-secret-key-change-this-in-pr
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+# Cloudinary Configuration
+cloudinary.config(
+    cloud_name="dtkyz8v6f",
+    api_key="554777785594141",
+    api_secret="nKI4sHe5jGGa4g_tPKIjOvC9D1I"
+)
+
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
