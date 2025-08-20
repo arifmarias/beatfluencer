@@ -703,7 +703,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
     <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden w-full max-w-[280px] mx-auto" style={{ height: '420px' }}>
       <div className="relative">
         {/* Clean Profile Image - No Overlays */}
-        <div className="aspect-square overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+        <div className="overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200" style={{ height: '200px' }}>
           <img 
             src={influencer.profile_image} 
             alt={influencer.name}
@@ -712,7 +712,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         </div>
       </div>
       
-      <CardContent className="p-3 space-y-2 flex flex-col flex-1" style={{ minHeight: '180px' }}>
+      <CardContent className="p-3 flex flex-col" style={{ height: '220px' }}>
         {/* Profile Info - Clean Layout */}
         <div className="text-center">
           <h3 className="font-bold text-base text-gray-900 mb-1 truncate">{displayName}</h3>
