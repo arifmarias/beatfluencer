@@ -393,6 +393,17 @@ async def create_influencer(
     await db.influencers.insert_one(influencer_obj.dict())
     return influencer_obj
 
+@api_router.get("/influencers/check-url")
+async def check_url_exists(
+    url: str,
+    current_user: User = Depends(require_role([UserRole.ADMIN, UserRole.INFLUENCER_MANAGER]))
+):
+    """Check if a social media URL already exists in the database"""
+    existing = await db.influencers.find_one({
+        "social_media_accounts.url": url.strip()
+    })
+    return {"exists": bool(existing)}
+
 @api_router.get("/influencers", response_model=List[Influencer])
 async def get_influencers(
     status: Optional[str] = None,
