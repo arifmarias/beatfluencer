@@ -1108,6 +1108,17 @@ const LandingPage = () => {
     fetchCategoryInfluencers();
   }, []);
 
+  // Refresh data when component becomes visible (user navigates back)
+  useEffect(() => {
+    const handleFocus = () => {
+      fetchFeaturedInfluencers();
+      fetchCategoryInfluencers();
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
+
   const fetchFeaturedInfluencers = async () => {
     try {
       const response = await axios.get(`${API}/influencers`, {
