@@ -187,7 +187,8 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Connect DetailedInfluencerCard View Profile buttons to InfluencerProfileModal"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -209,3 +210,5 @@ agent_communication:
     message: "NEW ISSUE: User reports bottom 2 buttons in InfluencerProfileModal are not visible. Implemented flexbox layout fix with proper height management - modal max-height 90vh, content flex-1 with overflow, footer flex-shrink-0. Need to test if fix resolves the issue."
   - agent: "testing"
     message: "TESTING COMPLETE: ✅ InfluencerProfileModal bottom buttons visibility fix is WORKING PERFECTLY! Modal footer with Close and Contact buttons is fully visible and functional. Modal has proper flexbox layout with max-height 90vh, scrollable content area, and fixed footer. Content scrolling works correctly while keeping footer visible. Both buttons are clickable and modal closes properly. All requirements met successfully!"
+  - agent: "main"
+    message: "NEW ISSUE: User reports that View Profile buttons in category modal (DetailedInfluencerCard components) should open the same InfluencerProfileModal that was just fixed. Added showProfile state, onClick handler, and conditional modal rendering to DetailedInfluencerCard component. Need to test if clicking View Profile in category modal opens the profile modal correctly."
