@@ -1160,6 +1160,7 @@ const demoInfluencers = {
 const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
   const { user } = useAuth();
   const [showSocialMedia, setShowSocialMedia] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const totalFollowers = influencer.social_media_accounts?.reduce((sum, account) => sum + account.follower_count, 0) || 0;
   
   // Get first name only if full name is too long
