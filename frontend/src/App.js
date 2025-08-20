@@ -999,30 +999,22 @@ const LandingPage = () => {
     setCategoryInfluencers(categoryData);
   };
 
-  const handleCategoryClick = async (categoryName) => {
-    if (expandedCategory === categoryName) {
-      setExpandedCategory(null);
-      return;
-    }
-
-    setExpandedCategory(categoryName);
+  const handleCategoryClick = async (category) => {
+    setSelectedCategory(category);
+    setShowCategoryModal(true);
     
-    // Fetch influencers for this category if not already loaded
-    if (!categoryInfluencers[categoryName] || categoryInfluencers[categoryName].length === 0) {
-      try {
-        const response = await axios.get(
-          `${API}/search/influencers?category=${encodeURIComponent(categoryName)}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const categoryData = response.data.slice(0, 9);
-        setCategoryInfluencers(prev => ({
-          ...prev,
-          [categoryName]: categoryData
-        }));
-      } catch (error) {
-        console.error(`Error fetching ${categoryName} influencers:`, error);
-      }
+    // Load demo data for the category
+    if (demoInfluencers[category.name]) {
+      setCategoryInfluencers(prev => ({
+        ...prev,
+        [category.name]: demoInfluencers[category.name]
+      }));
     }
+  };
+
+  const closeCategoryModal = () => {
+    setShowCategoryModal(false);
+    setSelectedCategory(null);
   };
 
   const handleSearch = async () => {
