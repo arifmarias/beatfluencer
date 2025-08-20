@@ -686,171 +686,123 @@ const demoInfluencers = {
 // Enhanced Influencer Card Component for Modal
 const DetailedInfluencerCard = ({ influencer }) => {
   const { user } = useAuth();
+  const [showSocialMedia, setShowSocialMedia] = useState(false);
   const totalFollowers = influencer.social_media_accounts?.reduce((sum, account) => sum + account.follower_count, 0) || 0;
-  const canSeeRemuneration = user?.role !== 'campaign_manager';
-  const minRate = influencer.remuneration_services?.length > 0 
-    ? Math.min(...influencer.remuneration_services.map(service => service.rate)) 
-    : null;
   
   const age = influencer.date_of_birth 
     ? new Date().getFullYear() - new Date(influencer.date_of_birth).getFullYear()
     : null;
 
   return (
-    <Card className="group hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-white border-0 shadow-lg overflow-hidden h-full">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/40 to-purple-50/40 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-      
-      {/* Profile Image Header */}
-      <div className="relative h-48 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 overflow-hidden">
-        <img 
-          src={influencer.profile_image} 
-          alt={influencer.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        
-        {/* Verification Badge */}
-        {influencer.verification_status && (
-          <div className="absolute top-4 right-4 bg-blue-500 text-white p-2 rounded-full shadow-lg">
-            <Verified className="w-4 h-4" />
-          </div>
-        )}
-        
-        {/* Featured Badge */}
-        {influencer.featured_creators && (
-          <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-full shadow-lg">
-            <div className="flex items-center space-x-1">
-              <Crown className="w-3 h-3" />
-              <span className="text-xs font-bold">Featured</span>
-            </div>
-          </div>
-        )}
-        
-        {/* Profile Info Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-          <h3 className="text-xl font-bold mb-1">{influencer.name}</h3>
-          <div className="flex items-center space-x-3 text-sm">
-            <Badge className="bg-white/20 text-white capitalize backdrop-blur-sm">
-              {influencer.account_type}
-            </Badge>
-            {age && (
-              <span className="flex items-center">
-                <Calendar className="w-3 h-3 mr-1" />
-                {age} years
-              </span>
-            )}
-            <span className="flex items-center">
-              <MapPin className="w-3 h-3 mr-1" />
-              {influencer.division}
-            </span>
-          </div>
+    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden h-full max-w-sm">
+      <div className="relative">
+        {/* Clean Profile Image - No Overlays */}
+        <div className="aspect-square overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+          <img 
+            src={influencer.profile_image} 
+            alt={influencer.name}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          />
         </div>
       </div>
       
-      <CardContent className="relative p-6 space-y-4">
-        {/* Bio */}
-        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
-          {influencer.bio}
-        </p>
-        
-        {/* Total Followers */}
-        <div className="flex items-center justify-center bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-4">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-1">
-              <Users className="w-5 h-5 text-indigo-600" />
-              <span className="text-2xl font-bold text-gray-900">
-                {totalFollowers > 1000000 
-                  ? `${(totalFollowers / 1000000).toFixed(1)}M` 
-                  : totalFollowers > 1000 
-                  ? `${(totalFollowers / 1000).toFixed(0)}K`
-                  : totalFollowers.toLocaleString()
-                }
-              </span>
-            </div>
-            <span className="text-sm text-gray-600 font-medium">Total Followers</span>
+      <CardContent className="p-4 space-y-3">
+        {/* Profile Info - Clean Layout */}
+        <div className="text-center">
+          <h3 className="font-bold text-lg text-gray-900 mb-1">{influencer.name}</h3>
+          <div className="flex items-center justify-center space-x-4 text-sm text-gray-600 mb-2">
+            <span className="capitalize">{influencer.account_type}</span>
+            {age && <span>{age} years</span>}
+            <span>{influencer.division}</span>
+          </div>
+          
+          {/* Badges Row */}
+          <div className="flex items-center justify-center space-x-2 mb-3">
+            {influencer.verification_status && (
+              <Badge className="bg-blue-100 text-blue-700 text-xs">
+                <Verified className="w-3 h-3 mr-1" />
+                Verified
+              </Badge>
+            )}
+            {influencer.featured_creators && (
+              <Badge className="bg-yellow-100 text-yellow-700 text-xs">
+                <Crown className="w-3 h-3 mr-1" />
+                Featured
+              </Badge>
+            )}
           </div>
         </div>
         
-        {/* Social Media Platforms */}
-        <div className="space-y-3">
-          <h4 className="text-sm font-bold text-gray-800 flex items-center">
-            <Globe className="w-4 h-4 mr-2 text-indigo-600" />
+        {/* Total Followers - Prominent Display */}
+        <div className="text-center bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4">
+          <div className="flex items-center justify-center space-x-2 mb-1">
+            <Users className="w-5 h-5 text-indigo-600" />
+            <span className="text-2xl font-bold text-gray-900">
+              {totalFollowers > 1000000 
+                ? `${(totalFollowers / 1000000).toFixed(1)}M` 
+                : totalFollowers > 1000 
+                ? `${(totalFollowers / 1000).toFixed(0)}K`
+                : totalFollowers.toLocaleString()
+              }
+            </span>
+          </div>
+          <span className="text-sm text-gray-600 font-medium">Total Followers</span>
+        </div>
+        
+        {/* Categories - Compact */}
+        <div className="flex flex-wrap gap-1 justify-center">
+          {influencer.categories?.slice(0, 3).map((category, index) => (
+            <Badge key={index} variant="outline" className="text-xs border-purple-200 text-purple-700 bg-purple-50">
+              {category}
+            </Badge>
+          ))}
+        </div>
+        
+        {/* Collapsible Social Media Section */}
+        <div className="border-t border-gray-100 pt-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowSocialMedia(!showSocialMedia)}
+            className="w-full text-gray-600 hover:text-indigo-600 transition-colors"
+          >
+            <Globe className="w-4 h-4 mr-2" />
             Social Media Presence
-          </h4>
-          <div className="space-y-2">
-            {influencer.social_media_accounts?.map((account, index) => (
-              <div key={index} className="flex items-center justify-between bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors">
-                <div className="flex items-center space-x-3">
-                  {account.platform === 'instagram' && <Instagram className="w-5 h-5 text-pink-500" />}
-                  {account.platform === 'youtube' && <Youtube className="w-5 h-5 text-red-500" />}
-                  {account.platform === 'facebook' && <Facebook className="w-5 h-5 text-blue-500" />}
-                  {account.platform === 'tiktok' && <Video className="w-5 h-5 text-black" />}
-                  <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium text-gray-900 capitalize">{account.platform}</span>
-                      {account.verification_status && (
-                        <Verified className="w-3 h-3 text-blue-500" />
-                      )}
-                    </div>
-                    <span className="text-xs text-gray-500">{account.channel_name}</span>
+            <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-200 ${showSocialMedia ? 'rotate-180' : ''}`} />
+          </Button>
+          
+          {showSocialMedia && (
+            <div className="mt-3 space-y-2 animate-fade-in">
+              {influencer.social_media_accounts?.map((account, index) => (
+                <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-2 text-sm">
+                  <div className="flex items-center space-x-2">
+                    {account.platform === 'instagram' && <Instagram className="w-4 h-4 text-pink-500" />}
+                    {account.platform === 'youtube' && <Youtube className="w-4 h-4 text-red-500" />}
+                    {account.platform === 'facebook' && <Facebook className="w-4 h-4 text-blue-500" />}
+                    {account.platform === 'tiktok' && <Video className="w-4 h-4 text-black" />}
+                    <span className="font-medium capitalize">{account.platform}</span>
+                    {account.verification_status && (
+                      <Verified className="w-3 h-3 text-blue-500" />
+                    )}
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-gray-900">
+                  <span className="font-semibold text-gray-900">
                     {account.follower_count > 1000000 
                       ? `${(account.follower_count / 1000000).toFixed(1)}M` 
                       : account.follower_count > 1000 
                       ? `${(account.follower_count / 1000).toFixed(0)}K`
                       : account.follower_count.toLocaleString()
                     }
-                  </div>
-                  <span className="text-xs text-gray-500">followers</span>
+                  </span>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        {/* Categories */}
-        <div className="space-y-2">
-          <h4 className="text-sm font-bold text-gray-800 flex items-center">
-            <Layers className="w-4 h-4 mr-2 text-purple-600" />
-            Content Categories
-          </h4>
-          <div className="flex flex-wrap gap-2">
-            {influencer.categories?.map((category, index) => (
-              <Badge key={index} variant="outline" className="border-purple-200 text-purple-700 bg-purple-50">
-                {category}
-              </Badge>
-            ))}
-          </div>
-        </div>
-        
-        {/* Campaign Stats & Pricing */}
-        <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-1 mb-1">
-              <Award className="w-4 h-4 text-green-600" />
-              <span className="text-lg font-bold text-gray-900">{influencer.total_campaigns}</span>
-            </div>
-            <span className="text-xs text-gray-600">Campaigns</span>
-          </div>
-          
-          {canSeeRemuneration && minRate && (
-            <div className="text-center">
-              <div className="flex items-center justify-center space-x-1 mb-1">
-                <DollarSign className="w-4 h-4 text-green-600" />
-                <span className="text-lg font-bold text-green-700">৳{minRate.toLocaleString()}</span>
-              </div>
-              <span className="text-xs text-gray-600">Starting from</span>
+              ))}
             </div>
           )}
         </div>
         
         {/* Action Button */}
-        <Button className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+        <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-2 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200">
           <Eye className="w-4 h-4 mr-2" />
-          View Full Profile
+          View Profile
         </Button>
       </CardContent>
     </Card>
