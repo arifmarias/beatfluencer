@@ -1553,7 +1553,7 @@ const LandingPage = () => {
                   <h3 className="text-sm font-semibold text-gray-800 mb-2 group-hover:text-gray-900 transition-colors">{category.name}</h3>
                   <div className="flex items-center justify-center space-x-2">
                     <Badge className="bg-gray-100 text-gray-600 px-2 py-0.5 text-xs font-medium border-0">
-                      {demoInfluencers[category.name]?.length || 0} creators
+                      {categoryInfluencers[category.name]?.length || 0} creators
                     </Badge>
                   </div>
                 </CardContent>
