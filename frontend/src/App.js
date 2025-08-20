@@ -252,11 +252,15 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       <div className="max-w-md w-full space-y-8 p-8">
         <div className="text-center">
-          <div className="mx-auto h-32 w-32 mb-8 flex items-center justify-center">
+          <div className="mx-auto h-40 w-40 mb-8 flex items-center justify-center">
             <img 
-              src="https://customer-assets.emergentagent.com/job_brandnest/artifacts/lynsk6m2_image.png" 
+              src="/beatfluencer_logo.png" 
               alt="Beatfluencer Logo"
-              className="h-full w-full object-contain drop-shadow-lg"
+              className="h-full w-full object-contain drop-shadow-2xl animate-float hover:scale-110 transition-transform duration-500"
+              style={{
+                filter: 'drop-shadow(0 0 20px rgba(147, 51, 234, 0.3))',
+                animation: 'float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate'
+              }}
             />
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Welcome to Beatfluencer</h2>
