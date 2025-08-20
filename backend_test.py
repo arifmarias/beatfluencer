@@ -11,6 +11,7 @@ class BeatfluencerAPITester:
         self.users = {}
         self.tests_run = 0
         self.tests_passed = 0
+        self.admin_token = None
 
     def run_test(self, name, method, endpoint, expected_status, data=None, headers=None, token_user=None):
         """Run a single API test"""
