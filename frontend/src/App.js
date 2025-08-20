@@ -1345,9 +1345,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-          </div>
-        </div>
-      </section>
 
       {/* Search Results */}
       {searchResults.length > 0 && (
