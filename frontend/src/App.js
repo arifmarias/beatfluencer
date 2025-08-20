@@ -2816,12 +2816,12 @@ const InfluencersPage = () => {
                 {/* Verification Status Filter */}
                 <div>
                   <Label className="text-sm font-medium text-gray-700 mb-2 block">Verification</Label>
-                  <Select value={filters.verificationStatus} onValueChange={(value) => handleFilterChange('verificationStatus', value)}>
+                  <Select value={filters.verificationStatus || "all"} onValueChange={(value) => handleFilterChange('verificationStatus', value === "all" ? "" : value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select verification" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Status</SelectItem>
+                      <SelectItem value="all">All Status</SelectItem>
                       <SelectItem value="verified">Verified</SelectItem>
                       <SelectItem value="unverified">Unverified</SelectItem>
                     </SelectContent>
@@ -2831,12 +2831,12 @@ const InfluencersPage = () => {
                 {/* Featured Status Filter */}
                 <div>
                   <Label className="text-sm font-medium text-gray-700 mb-2 block">Featured Status</Label>
-                  <Select value={filters.featuredStatus} onValueChange={(value) => handleFilterChange('featuredStatus', value)}>
+                  <Select value={filters.featuredStatus || "all"} onValueChange={(value) => handleFilterChange('featuredStatus', value === "all" ? "" : value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select featured" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Status</SelectItem>
+                      <SelectItem value="all">All Status</SelectItem>
                       <SelectItem value="featured">Featured</SelectItem>
                       <SelectItem value="non-featured">Non-Featured</SelectItem>
                     </SelectContent>
