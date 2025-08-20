@@ -1188,6 +1188,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
     : 250;
 
   return (
+    <>
     <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden w-full max-w-[280px] mx-auto" style={{ height: `${cardHeight}px` }}>
       <div className="relative">
         {/* Clean Profile Image - No Overlays */}
