@@ -714,15 +714,15 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
       
       <CardContent className="p-3 flex flex-col" style={{ height: '220px' }}>
         {/* Profile Info - Clean Layout */}
-        <div className="text-center">
-          <h3 className="font-bold text-base text-gray-900 mb-1 truncate">{displayName}</h3>
-          <div className="text-xs text-gray-600 mb-1">
+        <div className="text-center mb-2">
+          <h3 className="font-bold text-sm text-gray-900 mb-0.5 truncate">{displayName}</h3>
+          <div className="text-xs text-gray-600">
             <span className="capitalize">{influencer.account_type}</span> • <span>{influencer.division}</span>
           </div>
         </div>
         
         {/* Total Followers - Compact Display */}
-        <div className="text-center bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-1.5">
+        <div className="text-center bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-1.5 mb-2">
           <div className="flex items-center justify-center space-x-1 mb-0.5">
             <Users className="w-3 h-3 text-indigo-600" />
             <span className="text-sm font-bold text-gray-900">
@@ -739,9 +739,9 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         
         {/* Categories - Only show if different from current category */}
         {filteredCategories.length > 0 && (
-          <div className="flex flex-wrap gap-1 justify-center">
+          <div className="flex flex-wrap gap-1 justify-center mb-2">
             {filteredCategories.slice(0, 2).map((category, index) => (
-              <Badge key={index} variant="outline" className="text-xs border-purple-200 text-purple-700 bg-purple-50 py-0">
+              <Badge key={index} variant="outline" className="text-xs border-purple-200 text-purple-700 bg-purple-50 py-0 px-2">
                 {category}
               </Badge>
             ))}
@@ -749,7 +749,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         )}
         
         {/* Collapsible Social Media Section */}
-        <div className="border-t border-gray-100 pt-1 flex-1 flex flex-col min-h-0">
+        <div className="border-t border-gray-100 pt-1 mb-2">
           <Button
             variant="ghost"
             size="sm"
@@ -762,8 +762,8 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
           </Button>
           
           {showSocialMedia && (
-            <div className="mt-1 space-y-0.5 animate-fade-in flex-1 overflow-y-auto max-h-16">
-              {influencer.social_media_accounts?.slice(0, 3).map((account, index) => (
+            <div className="mt-1 space-y-0.5 animate-fade-in max-h-12 overflow-y-auto">
+              {influencer.social_media_accounts?.slice(0, 2).map((account, index) => (
                 <div key={index} className="flex items-center justify-between bg-gray-50 rounded-md p-1 text-xs">
                   <div className="flex items-center space-x-1">
                     {account.platform === 'instagram' && <Instagram className="w-3 h-3 text-pink-500" />}
@@ -786,8 +786,13 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
           )}
         </div>
         
-        {/* Action Button */}
-        <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-1 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200 text-xs mt-1">
+        {/* Action Button - Fixed at bottom */}
+        <div className="mt-auto">
+          <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium py-1.5 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200 text-xs">
+            <Eye className="w-3 h-3 mr-1" />
+            View Profile
+          </Button>
+        </div>
           <Eye className="w-3 h-3 mr-1" />
           View Profile
         </Button>
