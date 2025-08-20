@@ -533,6 +533,43 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database with default users and demo data"""
+    try:
+        # Create default admin user if not exists
+        admin_email = "admin@beatfluencer.com"
+        existing_admin = await db.users.find_one({"email": admin_email})
+        
+        if not existing_admin:
+            admin_user = User(
+                username="admin",
+                email=admin_email,
+                role=UserRole.ADMIN,
+                password_hash=get_password_hash("admin123")
+            )
+            await db.users.insert_one(admin_user.dict())
+            logger.info("Created default admin user")
+        
+        # Create demo campaign manager if not exists
+        cm_email = "cm_new@test.com"
+        existing_cm = await db.users.find_one({"email": cm_email})
+        
+        if not existing_cm:
+            cm_user = User(
+                username="Campaign Manager",
+                email=cm_email,
+                role=UserRole.CAMPAIGN_MANAGER,
+                password_hash=get_password_hash("cm123")
+            )
+            await db.users.insert_one(cm_user.dict())
+            logger.info("Created demo campaign manager user")
+            
+        logger.info("Database initialization completed successfully")
+        
+    except Exception as e:
+        logger.error(f"Error during database initialization: {e}")
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
