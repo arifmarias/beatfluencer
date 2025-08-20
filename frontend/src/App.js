@@ -712,7 +712,7 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
         </div>
       </div>
       
-      <CardContent className="p-3 flex flex-col" style={{ height: showSocialMedia ? '260px' : '220px' }}>
+      <CardContent className="p-3 flex flex-col" style={{ height: showSocialMedia ? '300px' : '250px' }}>
         {/* Profile Info - Clean Layout */}
         <div className="text-center mb-2">
           <h3 className="font-bold text-sm text-gray-900 mb-0.5 truncate">{displayName}</h3>
