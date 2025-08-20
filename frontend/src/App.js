@@ -699,8 +699,22 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
     category => category.toLowerCase() !== currentCategory?.toLowerCase()
   ) || [];
 
+  // Calculate dynamic height based on social media accounts
+  const socialMediaCount = influencer.social_media_accounts?.length || 0;
+  const baseHeight = 450;
+  const expandedBaseHeight = 500;
+  const additionalHeightPerSocialMedia = 32; // Height per social media item
+  
+  const cardHeight = showSocialMedia 
+    ? expandedBaseHeight + (Math.max(0, socialMediaCount - 3) * additionalHeightPerSocialMedia)
+    : baseHeight;
+    
+  const contentHeight = showSocialMedia
+    ? 300 + (Math.max(0, socialMediaCount - 3) * additionalHeightPerSocialMedia)
+    : 250;
+
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden w-full max-w-[280px] mx-auto" style={{ height: showSocialMedia ? '500px' : '450px' }}>
+    <Card className="group hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white border-0 shadow-md overflow-hidden w-full max-w-[280px] mx-auto" style={{ height: `${cardHeight}px` }}>
       <div className="relative">
         {/* Clean Profile Image - No Overlays */}
         <div className="overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200" style={{ height: '200px' }}>
