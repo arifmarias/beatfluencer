@@ -141,11 +141,15 @@ const Navigation = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/landing" className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-2 rounded-xl">
-                <Sparkles className="h-6 w-6" />
+              <div className="h-10 w-10 flex items-center justify-center">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_brandnest/artifacts/lynsk6m2_image.png" 
+                  alt="Beatfluencer Logo"
+                  className="h-full w-full object-contain drop-shadow-sm"
+                />
               </div>
               <div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold text-gray-900">
                   Beatfluencer
                 </span>
                 <div className="text-xs text-gray-500 font-medium">Bangladesh Platform</div>
