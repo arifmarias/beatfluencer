@@ -1379,17 +1379,16 @@ const LandingPage = () => {
             {categories.map((category) => (
               <Card 
                 key={category.name}
-                className="cursor-pointer transition-all duration-500 transform hover:scale-105 hover:shadow-2xl border-0 shadow-lg overflow-hidden"
+                className="cursor-pointer transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg border border-gray-100 bg-white/80 backdrop-blur-sm overflow-hidden group"
                 onClick={() => handleCategoryClick(category)}
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-10`}></div>
                 <CardContent className="relative p-4 text-center">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mx-auto mb-3 transform transition-transform duration-500 hover:rotate-6 hover:scale-105 shadow-lg`}>
-                    <category.icon className="w-6 h-6 text-white" />
+                  <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mx-auto mb-3 transform transition-all duration-300 group-hover:scale-110 shadow-sm border border-white`}>
+                    <category.icon className={`w-6 h-6 ${category.iconColor}`} />
                   </div>
-                  <h3 className="text-sm font-bold text-gray-900 mb-2">{category.name}</h3>
+                  <h3 className="text-sm font-semibold text-gray-800 mb-2 group-hover:text-gray-900 transition-colors">{category.name}</h3>
                   <div className="flex items-center justify-center space-x-2">
-                    <Badge className={`bg-gradient-to-r ${category.color} text-white px-2 py-0.5 text-xs`}>
+                    <Badge className="bg-gray-100 text-gray-600 px-2 py-0.5 text-xs font-medium border-0">
                       {demoInfluencers[category.name]?.length || 0} creators
                     </Badge>
                   </div>
