@@ -2119,123 +2119,188 @@ const AddInfluencerForm = ({ onClose, onSuccess }) => {
           {/* Step 4: Social Media */}
           {currentStep === 4 && (
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Social Media Accounts</h3>
-                <Button 
-                  type="button" 
-                  size="sm" 
-                  onClick={addSocialMedia}
-                  className="bg-blue-500 hover:bg-blue-600"
-                >
-                  <Plus className="w-4 h-4 mr-1" />
-                  Add Platform
-                </Button>
-              </div>
-
-              <div className="space-y-4">
-                {formData.social_media_accounts.map((account, index) => (
-                  <div key={index} className="border rounded-lg p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-medium">Social Media Account #{index + 1}</h4>
-                      <Button 
-                        type="button" 
-                        size="sm" 
-                        variant="destructive"
-                        onClick={() => removeSocialMedia(index)}
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div>
-                        <Label>Platform</Label>
-                        <Select 
-                          value={account.platform} 
-                          onValueChange={(value) => updateSocialMedia(index, 'platform', value)}
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {socialPlatforms.map(platform => (
-                              <SelectItem key={platform} value={platform.toLowerCase()}>
-                                {platform}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div>
-                        <Label>Channel Name</Label>
-                        <Input 
-                          value={account.channel_name}
-                          onChange={(e) => updateSocialMedia(index, 'channel_name', e.target.value)}
-                          placeholder="@username or channel name"
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Profile URL</Label>
-                        <Input 
-                          value={account.url}
-                          onChange={(e) => updateSocialMedia(index, 'url', e.target.value)}
-                          placeholder="https://..."
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Follower Count</Label>
-                        <Input 
-                          type="number"
-                          value={account.follower_count}
-                          onChange={(e) => updateSocialMedia(index, 'follower_count', parseInt(e.target.value) || 0)}
-                          placeholder="0"
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Created Year</Label>
-                        <Input 
-                          type="number"
-                          value={account.created_year}
-                          onChange={(e) => updateSocialMedia(index, 'created_year', parseInt(e.target.value) || new Date().getFullYear())}
-                          min="2000"
-                          max={new Date().getFullYear()}
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Created Month</Label>
-                        <Select 
-                          value={account.created_month?.toString()} 
-                          onValueChange={(value) => updateSocialMedia(index, 'created_month', parseInt(value))}
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Array.from({length: 12}, (_, i) => (
-                              <SelectItem key={i+1} value={(i+1).toString()}>
-                                {new Date(0, i).toLocaleString('default', { month: 'long' })}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
+              <h3 className="text-lg font-semibold text-gray-900">Social Media Information</h3>
+              
+              {/* Platform Selection */}
+              <div>
+                <Label className="text-base font-medium">Platform Active On</Label>
+                <p className="text-sm text-gray-600 mb-3">Select all platforms where this influencer is active</p>
+                
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {socialPlatforms.map(platform => (
+                    <label key={platform.id} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                       <Checkbox 
-                        checked={account.verification_status}
-                        onCheckedChange={(checked) => updateSocialMedia(index, 'verification_status', checked)}
+                        checked={formData.active_platforms.includes(platform.id)}
+                        onCheckedChange={(checked) => handlePlatformSelection(platform.id, checked)}
                       />
-                      <span className="text-sm">Verified Account</span>
-                    </div>
-                  </div>
-                ))}
+                      <div className="flex items-center space-x-2">
+                        {platform.id === 'facebook' && <Facebook className="w-5 h-5 text-blue-600" />}
+                        {platform.id === 'instagram' && <Instagram className="w-5 h-5 text-pink-500" />}
+                        {platform.id === 'youtube' && <Youtube className="w-5 h-5 text-red-500" />}
+                        {platform.id === 'tiktok' && <Video className="w-5 h-5 text-black" />}
+                        {platform.id === 'linkedin' && <Users className="w-5 h-5 text-blue-700" />}
+                        {platform.id === 'snapchat' && <Camera className="w-5 h-5 text-yellow-500" />}
+                        <span className="font-medium">{platform.name}</span>
+                      </div>
+                    </label>
+                  ))}
+                </div>
               </div>
+
+              {/* Platform Details */}
+              {formData.active_platforms.length > 0 && (
+                <div className="space-y-6">
+                  <div className="border-t pt-6">
+                    <h4 className="text-lg font-medium text-gray-900 mb-4">Platform Details</h4>
+                    
+                    {formData.active_platforms.map(platformId => {
+                      const platform = socialPlatforms.find(p => p.id === platformId);
+                      const account = formData.social_media_accounts.find(acc => acc.platform === platformId);
+                      
+                      return (
+                        <div key={platformId} className="bg-gray-50 rounded-lg p-6 space-y-4 mb-6">
+                          <div className="flex items-center space-x-2 mb-4">
+                            {platformId === 'facebook' && <Facebook className="w-6 h-6 text-blue-600" />}
+                            {platformId === 'instagram' && <Instagram className="w-6 h-6 text-pink-500" />}
+                            {platformId === 'youtube' && <Youtube className="w-6 h-6 text-red-500" />}
+                            {platformId === 'tiktok' && <Video className="w-6 h-6 text-black" />}
+                            {platformId === 'linkedin' && <Users className="w-6 h-6 text-blue-700" />}
+                            {platformId === 'snapchat' && <Camera className="w-6 h-6 text-yellow-500" />}
+                            <h5 className="text-lg font-semibold text-gray-900">{platform.name}</h5>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Channel Name - Mandatory */}
+                            <div>
+                              <Label className="text-sm font-medium">
+                                Channel Name <span className="text-red-500">*</span>
+                              </Label>
+                              <Input 
+                                value={account?.channel_name || ''}
+                                onChange={(e) => updateSocialMediaByPlatform(platformId, 'channel_name', e.target.value)}
+                                placeholder={`@username or ${platform.name} page name`}
+                                className="mt-1"
+                                required
+                              />
+                            </div>
+
+                            {/* Platform URL - Mandatory with validation */}
+                            <div>
+                              <Label className="text-sm font-medium">
+                                Platform URL <span className="text-red-500">*</span>
+                              </Label>
+                              <Input 
+                                value={account?.url || ''}
+                                onChange={(e) => {
+                                  updateSocialMediaByPlatform(platformId, 'url', e.target.value);
+                                  checkUrlExists(e.target.value, platformId);
+                                }}
+                                placeholder={`${platform.baseUrl}username`}
+                                className={`mt-1 ${urlErrors[platformId] ? 'border-red-500' : ''}`}
+                                required
+                              />
+                              {urlErrors[platformId] && (
+                                <p className="text-red-500 text-xs mt-1">{urlErrors[platformId]}</p>
+                              )}
+                            </div>
+
+                            {/* Channel Created Year */}
+                            <div>
+                              <Label className="text-sm font-medium">Channel Created Year</Label>
+                              <Select 
+                                value={account?.created_year?.toString() || new Date().getFullYear().toString()} 
+                                onValueChange={(value) => updateSocialMediaByPlatform(platformId, 'created_year', parseInt(value))}
+                              >
+                                <SelectTrigger className="mt-1">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {Array.from({length: new Date().getFullYear() - 2003}, (_, i) => {
+                                    const year = new Date().getFullYear() - i;
+                                    return (
+                                      <SelectItem key={year} value={year.toString()}>
+                                        {year}
+                                      </SelectItem>
+                                    );
+                                  })}
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            {/* Channel Created Month */}
+                            <div>
+                              <Label className="text-sm font-medium">Channel Created Month</Label>
+                              <Select 
+                                value={account?.created_month?.toString() || (new Date().getMonth() + 1).toString()} 
+                                onValueChange={(value) => updateSocialMediaByPlatform(platformId, 'created_month', parseInt(value))}
+                              >
+                                <SelectTrigger className="mt-1">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {Array.from({length: 12}, (_, i) => (
+                                    <SelectItem key={i+1} value={(i+1).toString()}>
+                                      {new Date(0, i).toLocaleString('default', { month: 'long' })}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            {/* Follower Count */}
+                            <div>
+                              <Label className="text-sm font-medium">Follower Count</Label>
+                              <Input 
+                                type="number"
+                                value={account?.follower_count || 0}
+                                onChange={(e) => updateSocialMediaByPlatform(platformId, 'follower_count', parseInt(e.target.value) || 0)}
+                                placeholder="0"
+                                className="mt-1"
+                                min="0"
+                              />
+                            </div>
+
+                            {/* CPV */}
+                            <div>
+                              <Label className="text-sm font-medium">CPV (Cost Per View)</Label>
+                              <Input 
+                                type="number"
+                                step="0.01"
+                                value={account?.cpv || 0}
+                                onChange={(e) => updateSocialMediaByPlatform(platformId, 'cpv', parseFloat(e.target.value) || 0)}
+                                placeholder="0.00"
+                                className="mt-1"
+                                min="0"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Verification Status */}
+                          <div className="pt-2">
+                            <label className="flex items-center space-x-3">
+                              <Checkbox 
+                                checked={account?.verification_status || false}
+                                onCheckedChange={(checked) => updateSocialMediaByPlatform(platformId, 'verification_status', checked)}
+                              />
+                              <div className="flex items-center space-x-2">
+                                <Verified className="w-4 h-4 text-blue-500" />
+                                <span className="text-sm font-medium">Verified Account</span>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {formData.active_platforms.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  <Globe className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                  <p>Select platforms above to configure social media accounts</p>
+                </div>
+              )}
             </div>
           )}
         </div>
