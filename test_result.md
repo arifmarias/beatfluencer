@@ -134,6 +134,12 @@ frontend:
       - working: true
         agent: "main"
         comment: "VERIFIED: Social Media Presence collapsible is working perfectly. Found 3 Social Media buttons, tested expand/collapse functionality successfully"
+      - working: false
+        agent: "main"
+        comment: "USER REPORT: Social Media buttons not visible in actual UI despite code being present"
+      - working: true
+        agent: "main"
+        comment: "FIXED: Layout constraints were preventing Social Media section from being visible. Changed CardContent height from fixed 180px to flexible minHeight. Optimized spacing and made all elements more compact. Now all 3 Social Media buttons are visible and working with expand/collapse functionality."
 
 metadata:
   created_by: "main_agent"
