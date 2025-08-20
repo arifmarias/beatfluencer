@@ -3434,7 +3434,33 @@ const CategoryListPage = () => {
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ') || '';
   
-  const influencers = [];
+  // Fetch real influencers for this category from the backend
+  const [influencers, setInfluencers] = useState([]);
+  const { token } = useAuth();
+
+  useEffect(() => {
+    const fetchCategoryInfluencers = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/influencers`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        // Filter influencers by category
+        const categoryInfluencers = response.data.filter(influencer => 
+          influencer.categories?.includes(categoryDisplayName)
+        );
+        
+        setInfluencers(categoryInfluencers);
+      } catch (error) {
+        console.error('Error fetching category influencers:', error);
+        setInfluencers([]);
+      }
+    };
+
+    if (token && categoryDisplayName) {
+      fetchCategoryInfluencers();
+    }
+  }, [categoryDisplayName, token]);
 
   return (
     <div className="min-h-screen bg-gray-50">
