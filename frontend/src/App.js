@@ -793,9 +793,6 @@ const DetailedInfluencerCard = ({ influencer, currentCategory }) => {
             View Profile
           </Button>
         </div>
-          <Eye className="w-3 h-3 mr-1" />
-          View Profile
-        </Button>
       </CardContent>
     </Card>
   );
