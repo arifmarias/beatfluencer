@@ -3437,7 +3437,7 @@ const CategoryListPage = () => {
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ') || '';
   
-  const influencers = demoInfluencers[categoryDisplayName] || [];
+  const influencers = [];
 
   return (
     <div className="min-h-screen bg-gray-50">
