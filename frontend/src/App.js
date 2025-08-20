@@ -338,7 +338,127 @@ const Login = () => {
   );
 };
 
-// Influencer Card Component
+// Influencer Profile Modal Component
+const InfluencerProfileModal = ({ influencer, onClose }) => {
+  if (!influencer) return null;
+
+  const totalFollowers = influencer.social_media_accounts?.reduce((sum, account) => 
+    sum + (account.follower_count || 0), 0
+  ) || 0;
+
+  const formatFollowers = (count) => {
+    if (count >= 1000000) {
+      return `${(count / 1000000).toFixed(1)}M`;
+    } else if (count >= 1000) {
+      return `${(count / 1000).toFixed(0)}K`;
+    }
+    return count.toLocaleString();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden animate-scale-in">
+        {/* Modal Header */}
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-6 text-white relative overflow-hidden">
+          <div className="absolute inset-0 bg-black/10"></div>
+          <div className="relative flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <img 
+                src={influencer.profile_image || `https://ui-avatars.com/api/?name=${encodeURIComponent(influencer.name)}&size=400&background=6366f1&color=ffffff`} 
+                alt={influencer.name}
+                className="w-20 h-20 rounded-full object-cover border-4 border-white/20"
+              />
+              <div>
+                <h2 className="text-3xl font-bold mb-1">{influencer.name}</h2>
+                <p className="text-white/90 text-lg">{influencer.division}</p>
+                <div className="flex items-center space-x-2 mt-2">
+                  <Badge className="bg-white/20 text-white border-white/30">
+                    {formatFollowers(totalFollowers)} followers
+                  </Badge>
+                </div>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="text-white hover:bg-white/20 p-3 rounded-xl"
+            >
+              <X className="w-6 h-6" />
+            </Button>
+          </div>
+        </div>
+        
+        {/* Modal Content */}
+        <div className="p-6 max-h-[calc(90vh-200px)] overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Basic Info */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-gray-900">Profile Information</h3>
+              <div className="space-y-3">
+                <div>
+                  <span className="text-sm font-medium text-gray-500">Bio</span>
+                  <p className="text-gray-900">{influencer.bio || 'No bio available'}</p>
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-gray-500">Account Type</span>
+                  <p className="text-gray-900 capitalize">{influencer.account_type}</p>
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-gray-500">Experience</span>
+                  <p className="text-gray-900">{influencer.experience_years || 'N/A'} years</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Media */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-gray-900">Social Media Accounts</h3>
+              <div className="space-y-3">
+                {influencer.social_media_accounts?.map((account, index) => (
+                  <div key={index} className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                    <div className="flex items-center space-x-3">
+                      {account.platform === 'instagram' && <Instagram className="w-5 h-5 text-pink-500" />}
+                      {account.platform === 'youtube' && <Youtube className="w-5 h-5 text-red-500" />}
+                      {account.platform === 'facebook' && <Facebook className="w-5 h-5 text-blue-500" />}
+                      {account.platform === 'tiktok' && <Video className="w-5 h-5 text-black" />}
+                      <div>
+                        <p className="font-medium capitalize">{account.platform}</p>
+                        <p className="text-sm text-gray-500">{account.channel_name}</p>
+                      </div>
+                    </div>
+                    <span className="font-bold text-gray-900">
+                      {formatFollowers(account.follower_count)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Categories */}
+          {influencer.categories && influencer.categories.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Categories</h3>
+              <div className="flex flex-wrap gap-2">
+                {influencer.categories.map((category, index) => (
+                  <Badge 
+                    key={index} 
+                    className="bg-purple-100 text-purple-700 border-purple-200 px-3 py-1"
+                  >
+                    {category}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Enhanced Influencer Card Component
 const InfluencerCard = ({ influencer, showRemuneration = false }) => {
   const { user } = useAuth();
   const totalFollowers = influencer.social_media_accounts?.reduce((sum, account) => sum + account.follower_count, 0) || 0;
