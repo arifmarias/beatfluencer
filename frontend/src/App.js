@@ -1261,14 +1261,13 @@ const LandingPage = () => {
       
       console.log('Organized category data:', categoryData); // Debug log
       
-      // Limit each category to 9 influencers and merge with demo data if needed
+      // Limit each category to 9 influencers
       categories.forEach(category => {
         const realInfluencers = categoryData[category.name] || [];
-        const demoData = demoInfluencers[category.name] || [];
         
-        // Use real influencers first, then fill with demo data if needed
-        const combined = [...realInfluencers, ...demoData].slice(0, 9);
-        categoryData[category.name] = combined;
+        // Use only real influencers, limited to 9
+        const limited = realInfluencers.slice(0, 9);
+        categoryData[category.name] = limited;
       });
       
       console.log('Final category data:', categoryData); // Debug log
